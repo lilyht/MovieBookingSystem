@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
-	<title>参考页首页</title>
+	<title>管理员登录页</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,28 +29,8 @@
 	</style>
   </head>
   <body>
-	<div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
-	<div class="preloader">
-		<div class="preloader-body">
-			<div class="cssload-bell">
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-			</div>
-		</div>
-    </div>
+	<!-- <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div> -->
+	<div class="preloader"></div>
 	<div class="page">
       <!-- Page Header-->
       <header class="section page-header header-creative-wrap context-dark">
@@ -58,7 +38,7 @@
         <div class="rd-navbar-wrap">
           <nav class="rd-navbar rd-navbar-creative rd-navbar-creative-2" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="100px" data-xl-stick-up-offset="112px" data-xxl-stick-up-offset="132px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
             <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
-            <div class="rd-navbar-main-outer" style="background-color: rgba(0,0,0,0.3);">
+            <div class="rd-navbar-main-outer" style="background-color: #3cc3c1;">
                 <p style="display: block; position: relative; float: left; font-size: 25px; padding-top: 16px; ">电影订票系统</p>
               <div class="rd-navbar-main">
                 <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
@@ -93,42 +73,57 @@
           </nav>
         </div>
       </header>
-      <!-- Swiper-->
-      <section class="section swiper-container swiper-slider swiper-slider-4" data-loop="true" data-autoplay="5000">
-        <div class="swiper-wrapper context-dark">
-          <div class="swiper-slide swiper-slide-1" data-slide-bg="static/images/枕上书1.jpg">
-            <div class="swiper-slide-caption section-md text-sm-left">
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-8 col-md-7">
-                    <h2 class="swiper-title-1" data-caption-animate="fadeInLeft" data-caption-delay="100">三生三世枕上书 <br>
-                    </h2>
-                    <h5 class="swiper-title-2 text-width-medium" data-caption-animate="fadeInLeft" data-caption-delay="250">主演：高伟光 迪丽热巴</h5>
-                    <div class="button-wrap" data-caption-animate="fadeInLeft" data-caption-delay="400"><a class="button button-lg button-shadow-5 button-default-outline button-zakaria" href="grid-shop.html" style="font-size: 16px;">观 看</a></div>
+      <!-- login in system -->
+      <section class="section section-xl bg-default text-md-left">
+        <div class="container">
+          <div class="title-classic">
+            <h4 class="title-classic-title">管理员登录</h4>
+          </div>
+          <!-- 登录表单 -->
+          <form method="post" action="" method="POST"">
+            <div class="row row-20 row-md-30">
+              <div class="col-lg-8">
+                <div class="row row-20 row-md-30">
+                  <div class="col-sm-6">
+                    <div class="form-wrap">
+                      <input class="form-input" id="contact-first-name-2" type="text" name="adminname"/>
+                      <label class="form-label" for="contact-first-name-2">用户名</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-wrap">
+                      <input class="form-input" id="contact-last-name-2" type="password" name="password"/>
+                      <label class="form-label" for="contact-last-name-2">密码</label>
+                    </div>
+                  </div>
+                  <div style="padding-left: 15px;">
+                    <label class="checkbox-inline">
+                        <input name="adminRole" value="SYSADMIN" type="checkbox">系统管理员
+                    </label>
+                    <label class="checkbox-inline" style="margin-left: 15px;">
+                        <input name="adminRole" value="CINADMIN" type="checkbox">电影院管理员
+                    </label>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="swiper-slide swiper-slide-2" data-slide-bg="static/images/slide-2.jpg">
-            <div class="swiper-slide-caption section-md text-center">
-              <div class="container">
-                <h2 class="swiper-title-1" data-caption-animate="fadeInLeft" data-caption-delay="100">Make Your Food Organic</h2>
-                <h5 class="swiper-title-2" data-caption-animate="fadeInRight" data-caption-delay="250">With our wide variety of vegan & organic food products, we are sure <br class="d-none d-md-block">to help you make the right choice to start your day.
-                </h5>
-                <div class="button-wrap" data-caption-animate="fadeInUp" data-caption-delay="400"><a class="button button-lg button-shadow-5 button-default-outline button-zakaria" href="grid-shop.html">Shop now</a></div>
-              </div>
-            </div>
-          </div>
+            <button class="button button-lg button-primary button-zakaria" type="submit">确认登录</button>
+          </form>
         </div>
-        <!-- Swiper Pagination-->
-        <div class="swiper-pagination"></div>
-        <!-- Swiper Navigation-->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </section>     
-      
-      
+      </section>
+        
+    {% if messages == "done1" %}
+        <script>alert("登录成功！欢迎系统管理员！")</script>
+        <script type='text/javascript'>window.location.href='index'</script>
+    {% elif messages == "fail1" %}
+        <script>alert("登录失败！您没有系统管理员权限或登录信息出错。")</script>
+    {% elif messages == "done2" %}
+        <script>alert("登录成功！欢迎影院管理员！")</script>
+        <script type='text/javascript'>window.location.href='MerchantIndex'</script>
+    {% elif messages == "fail2" %}
+        <script>alert("登录失败！您没有影院管理员权限或登录信息出错。")</script>
+    {% endif %}
+        
       <!-- Page Footer-->
       <footer class="section footer-modern footer-modern-2">
         <div class="footer-modern-panel text-center">
@@ -140,8 +135,6 @@
         </div>
       </footer>
     </div>
-    <div class="snackbars" id="form-output-global"></div>
-
     <script src="static/js/core.min.js"></script>
     <script src="static/js/script.js"></script>
   </body>

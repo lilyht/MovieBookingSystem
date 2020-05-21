@@ -4,18 +4,83 @@ from werkzeug.utils import secure_filename
 import os
 import sys
 # 重新载入模块，得到更新后的模块
+import MySQLdb
 import importlib
 importlib.reload(sys)
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def indexpage():
-	return render_template('indexPage.html')
+    if request.method == 'GET':
+        return render_template('indexPage.html')
+    elif request.method == 'GET':
+        return render_template('indexPage.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        username = request.form.get('adminname')
+        password = request.form.get('password')
+        adminRole = request.form.get('adminRole')
+        print(adminRole)
+        print(username)
+        # 连接数据库，默认数据库用户名root，密码空
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+
+        if adminRole == 'SYSADMIN':  # 系统管理员
+            cursor = db.cursor()
+            try:
+                cursor.execute("use MBDB")
+            except:
+                print("Error: unable to use database!")
+            sql = "SELECT * from SYSADMIN where adminname = '{}' and password = '{}'".format(username, password)
+            cursor.execute(sql)
+            db.commit()
+            res = cursor.fetchall()
+            num = 0
+            for row in res:
+                num = num + 1
+            # 如果存在该管理员且密码正确
+            if num == 1:
+                print("登录成功！欢迎系统管理员！")
+                msg = "done1"
+            else:
+                print("您没有系统管理员权限或登录信息出错。")
+                msg = "fail1"
+            print(msg)
+            return render_template('login.html', messages=msg, username=username, userRole=adminRole)
+
+        elif adminRole == 'CINADMIN':  # 电影院管理员
+            cursor = db.cursor()
+            try:
+                cursor.execute("use CINADMIN")
+            except:
+                print("Error: unable to use database!")
+            sql = "SELECT * from CINADMIN where adminname = '{}' and password='{}'".format(username, password)
+            cursor.execute(sql)
+            db.commit()
+            res = cursor.fetchall()
+            num = 0
+            for row in res:
+                num = num + 1
+            # 如果存在该电影院管理员且密码正确
+            if num == 1:
+                print("登录成功！欢迎电影院管理员！")
+                msg = "done2"
+            else:
+                print("您没有电影院管理员权限或登录信息出错。")
+                msg = "fail2"
+            return render_template('login.html', messages=msg, username=username, userRole=adminRole)
+
+
+
+@app.route('/CameraList')
+def CameraList():
+	return render_template('CameraList.html')
 
 
 if __name__ == '__main__':

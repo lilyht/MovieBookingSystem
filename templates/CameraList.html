@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+    <head>
+        <title>影院列表</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <script src="/cdn-cgi/apps/head/3ts2ksMwXvKRuG480KNifJ2_JNM.js"></script>
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/csimages" href="http://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CLato%7CKalam:300,400,700">
+    
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+        <style>
+            .ie-panel {
+                display: none;
+                background: #212121;
+                padding: 10px 0;
+                box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);
+                clear: both;text-align:center;
+                position: relative;
+                z-index: 1;
+            }
+            html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {
+                display: block;
+            }
+        </style>
+    </head>
+  <body>
+    <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
+    <div class="preloader">
+      <div class="preloader-body">
+        <div class="cssload-bell">
+          <div class="cssload-circle">
+            <div class="cssload-inner"></div>
+          </div>
+          <div class="cssload-circle">
+            <div class="cssload-inner"></div>
+          </div>
+          <div class="cssload-circle">
+            <div class="cssload-inner"></div>
+          </div>
+          <div class="cssload-circle">
+            <div class="cssload-inner"></div>
+          </div>
+          <div class="cssload-circle">
+            <div class="cssload-inner"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <!-- Page Header-->
+      <header class="section page-header header-creative-wrap context-dark">
+        <!-- RD Navbar-->
+        <div class="rd-navbar-wrap">
+          <nav class="rd-navbar rd-navbar-creative rd-navbar-creative-2" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="100px" data-xl-stick-up-offset="112px" data-xxl-stick-up-offset="132px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
+            <div class="rd-navbar-main-outer" style="background-color: rgba(0,0,0,0.3);">
+                <p style="display: block; position: relative; float: left; font-size: 25px; padding-top: 16px; ">电影订票系统</p>
+              <div class="rd-navbar-main">
+                <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
+                  <ul class="rd-navbar-nav">
+                    <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                      <ul class="rd-menu rd-navbar-dropdown">
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us">About Us</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="what-we-offer">What We Offer</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="our-team">Our Team</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="pricing-list">Pricing List</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404-page">404 Page</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="coming-soon">Coming Soon</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="privacy-policy">Privacy Policy</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="search-results">Search Results</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="login">管理员入口</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <section class="breadcrumbs-custom">
+        <div class="parallax-container" data-parallax-img="static/images/影院.png">
+          <div class="breadcrumbs-custom-body parallax-content context-dark">
+            <div class="container">
+              <h2 class="text-transform-capitalize breadcrumbs-custom-title">影院列表</h2>
+              <h5 class="breadcrumbs-custom-text">Camera List</h5>
+            </div>
+          </div>
+        </div>
+        <div class="breadcrumbs-custom-footer">
+          <div class="container">
+            <ul class="breadcrumbs-custom-path"> 
+              <!-- 路径 -->
+              <li><a href="index">Home</a></li>
+              <li><a href="CameraList">影院列表</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Section Services-->
+      <section class="section section-xl bg-default">
+        <div class="container">
+          <div class="row row-30 box-ordered">
+            <div class="col-sm-6 col-lg-3">
+              <article class="box-icon-modern">
+                <div class="box-icon-modern-header">
+                  <div class="box-icon-modern-count box-ordered-item"></div>
+                  <div class="box-icon-modern-icon fl-bigmug-line-big104"></div>
+                </div>
+                <h4 class="box-icon-modern-title"><a href="#">Free shipping</a></h4>
+                <p class="box-icon-modern-text">Cur tantas regiones barbarorum peat dibus obiit, tregiones barbarorum peat dibus obiit, tot mariata</p>
+              </article>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <article class="box-icon-modern">
+                <div class="box-icon-modern-header">
+                  <div class="box-icon-modern-count box-ordered-item"></div>
+                  <div class="box-icon-modern-icon fl-bigmug-line-shopping199"></div>
+                </div>
+                <h4 class="box-icon-modern-title"><a href="#">Organic food</a></h4>
+                <p class="box-icon-modern-text">Fraticinidas volare in regius cirpi! Raptus, fatalis sagas etiam perdere de camerarius, fortis detrius.</p>
+              </article>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <article class="box-icon-modern">
+                <div class="box-icon-modern-header">
+                  <div class="box-icon-modern-count box-ordered-item"></div>
+                  <div class="box-icon-modern-icon fl-bigmug-line-like51"></div>
+                </div>
+                <h4 class="box-icon-modern-title"><a href="#">Healthy for you</a></h4>
+                <p class="box-icon-modern-text">Vae, clemens lanista! Cum lacta favere, omnes competitiones resuscitabo salvus, flavum</p>
+              </article>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <article class="box-icon-modern">
+                <div class="box-icon-modern-header">
+                  <div class="box-icon-modern-count box-ordered-item"></div>
+                  <div class="box-icon-modern-icon fl-bigmug-line-giftbox54"></div>
+                </div>
+                <h4 class="box-icon-modern-title"><a href="#">Gifts for clients</a></h4>
+                <p class="box-icon-modern-text">A falsis, valebat brevis homo. Neuter, alter abactors rare convertam de flavum, bassus clabulare.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Subscribe to Our Newsletter-->
+      <section class="parallax-container" data-parallax-img="static/images/parallax-4.jpg">
+        <div class="parallax-content section-xxl context-dark text-md-left">
+          <div class="container">
+            <div class="row row-30 justify-content-center align-items-center align-items-md-end">
+              <div class="col-lg-3">
+                <h3 class="text-spacing-100 wow fadeInLeft">Stay <span class="font-weight-light">connected</span>
+                </h3>
+                <p class="wow fadeInLeft" data-wow-delay=".1s">Subscribe to our newsletter</p>
+              </div>
+              <div class="col-lg-8 col-xl-9 inset-lg-bottom-10">
+                <!-- RD Mailform-->
+                <form class="rd-form rd-mailform rd-form-inline form-lg rd-form-text-center" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="bat/rd-mailform.php">
+                  <div class="form-wrap wow fadeInUp">
+                    <input class="form-input" id="subscribe-form-0-email" type="email" name="email" data-constraints="@Email @Required"/>
+                    <label class="form-label" for="subscribe-form-0-email">Enter your e-mail address</label>
+                  </div>
+                  <div class="form-button wow fadeInRight">
+                    <button class="button button-shadow-2 button-zakaria button-lg button-primary" type="submit">Subscribe</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Pricing List-->
+      <section class="section section-sm section-first bg-default">
+        <div class="container">
+          <div class="row row-xl row-30 justify-content-center">
+            <div class="col-sm-6 col-lg-4">
+              <article class="pricing-classic">
+                <div class="pricing-classic-header"><img class="pricing-classic-figure" src="static/images/pricing-1-346x229.jpg" alt="" width="346" height="229"/>
+                  <div class="pricing-classic-caption">
+                    <div>
+                      <h3 class="pricing-classic-title">Fruit Box</h3>
+                      <div class="pricing-classic-price-wrap">
+                        <div class="pricing-classic-price heading-4">$90.00</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pricing-classic-body">
+                  <ul class="pricing-classic-list">
+                    <li><span>2 kg</span> Apples</li>
+                    <li><span>1.5 kg</span> Cherries</li>
+                    <li><span>2 kg</span> Bananas</li>
+                    <li><span>1 kg</span> Pineapples</li>
+                  </ul><a class="button button-lg button-default-outline button-zakaria" href="#">Add to cart</a>
+                </div>
+              </article>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <article class="pricing-classic pricing-classic-sale">
+                <div class="pricing-classic-header"><img class="pricing-classic-figure" src="static/images/pricing-2-346x229.jpg" alt="" width="346" height="229"/>
+                  <div class="pricing-classic-caption">
+                    <div><span class="product-badge product-badge-sale">Sale</span>
+                      <h3 class="pricing-classic-title">Mix Box</h3>
+                      <div class="pricing-classic-price-wrap">
+                        <div class="pricing-classic-price pricing-classic-price-old heading-6">$150.00</div>
+                        <div class="pricing-classic-price heading-4">$120.00</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pricing-classic-body">
+                  <ul class="pricing-classic-list">
+                    <li><span>3 kg</span> Oranges</li>
+                    <li><span>1.6 kg</span> Tomatoes</li>
+                    <li><span>1.5 kg</span> Melons</li>
+                    <li><span>2.8 kg</span> Peppers</li>
+                  </ul><a class="button button-lg button-default-outline button-zakaria" href="#">Add to cart</a>
+                </div>
+              </article>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <article class="pricing-classic">
+                <div class="pricing-classic-header"><img class="pricing-classic-figure" src="static/images/pricing-3-346x229.jpg" alt="" width="346" height="229"/>
+                  <div class="pricing-classic-caption">
+                    <div>
+                      <h3 class="pricing-classic-title">Veggie Box</h3>
+                      <div class="pricing-classic-price-wrap">
+                        <div class="pricing-classic-price heading-4">$100.00</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pricing-classic-body">
+                  <ul class="pricing-classic-list">
+                    <li><span>4 kg</span> Cucumbers</li>
+                    <li><span>1.8 kg</span> Carrots</li>
+                    <li><span>3 kg</span> Potatoes</li>
+                    <li><span>2 kg</span> Tomatoes</li>
+                  </ul><a class="button button-lg button-default-outline button-zakaria" href="#">Add to cart</a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Page Footer-->
+      <footer class="section footer-modern footer-modern-2">
+        <div class="footer-modern-panel text-center">
+          <div class="container">
+            <p class="rights"><span>Copyright &copy; 天津大学软件工程2020春季</span></p>
+            <p>项目地址：<a class="link" href="https://github.com/lilyht/MovieBookingSystem" style="color: write;">https://github.com/lilyht/MovieBookingSystem</a></p>
+
+          </div>
+        </div>
+      </footer>
+    </div>
+    <div class="snackbars" id="form-output-global"></div>
+    <script src="static/js/core.min.js"></script>
+    <script src="static/js/script.js"></script>
+  </body>
+</html>
