@@ -78,9 +78,39 @@ def login():
 
 
 
-@app.route('/CameraList')
+@app.route('/CameraList', methods=['GET', 'POST'])
 def CameraList():
-	return render_template('CameraList.html')
+    msg = ''
+    # 连接数据库，默认数据库用户名root，密码空
+    db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+    cursor = db.cursor()
+    try:
+        cursor.execute("use MBDB")
+    except:
+        print("Error: unable to use database!")
+    sql = "SELECT * from Cinema"
+    cursor.execute(sql)
+    db.commit()
+    res = cursor.fetchall()
+
+    if request.method == 'GET':
+        print('GET')
+        if len(res) != 0:
+            msg = "done"
+            print(msg)
+            return render_template('CameraList.html', result=res, messages=msg)
+        else:
+            print("NULL")
+            msg = "none"
+            return render_template('CameraList.html', messages=msg)
+    elif request.method == 'POST':
+        print('POST')
+        # TODO: 跳转到相应的影院内部页面
+        #TODO: msg为空，待解决
+        cinemaID = request.form.get('cinemaID')
+        print(cinemaID)
+        print(msg)
+        return render_template('CameraList.html', result=res, messages=msg)
 
 
 if __name__ == '__main__':
