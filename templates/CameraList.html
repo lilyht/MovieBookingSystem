@@ -106,7 +106,7 @@
                     <p class="team-modern-text">电话：{{ item[3] }}</p>
                   </article>
                   <div>
-                    <form method="post" action="{{ url_for('CameraList') }}" method="POST">
+                    <form method="post" action="{{ url_for('CameraDetail') }}" method="POST">
                       <input class="form-input" type="text" name="cinemaID" value={{ item[0] }} style="display: none;"/>
                       <button class="button button-lg button-primary button-zakaria" type="submit" style="padding: 10px 20px;">进入影院</button>
                     </form>

@@ -106,11 +106,48 @@ def CameraList():
     elif request.method == 'POST':
         print('POST')
         # TODO: 跳转到相应的影院内部页面
-        #TODO: msg为空，待解决
+        # TODO: msg为空，待解决
+        cinemaID = request.form.get('cinemaID')
+        # print(cinemaID)
+        print(msg)
+        return render_template('CameraDetail.html' ,messages=msg, cinemaID=cinemaID)
+
+@app.route('/CameraDetail', methods=['GET', 'POST'])
+def CameraDetail():
+    if request.method == 'GET':
+        print('GET')
+        render_template('CameraDetail.html')
+    elif request.method == 'POST':
+        # 从影院点击进来的是POST方法
+        print('POST')
         cinemaID = request.form.get('cinemaID')
         print(cinemaID)
-        print(msg)
-        return render_template('CameraList.html', result=res, messages=msg)
+
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+        sql1 = "SELECT * from Cinema WHERE cinemaID = {}".format(cinemaID)
+        cursor.execute(sql1)
+        db.commit()
+        cinmea = cursor.fetchone()
+        print(cinmea)
+
+        sql = "SELECT * from Movie WHERE cinemaID = {}".format(cinemaID)
+        cursor.execute(sql)
+        db.commit()
+        res = cursor.fetchall()
+        # print(res)
+        if len(res) != 0:
+            msg = "done"
+            print(msg)
+            return render_template('CameraDetail.html', cinmea=cinmea, result=res, messages=msg)
+        else:
+            print("NULL")
+            msg = "none"
+            return render_template('CameraDetail.html', cinmea=cinmea, messages=msg)
 
 
 if __name__ == '__main__':

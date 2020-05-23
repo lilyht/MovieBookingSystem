@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+	<title>电影院详情页</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script src="/cdn-cgi/apps/head/3ts2ksMwXvKRuG480KNifJ2_JNM.js"></script>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CLato%7CKalam:300,400,700">
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  </head>
+  <body>
+	<div class="preloader"></div>
+	<div class="page">
+      <!-- Page Header-->
+      <header class="section page-header header-creative-wrap context-dark">
+        <!-- RD Navbar-->
+        <div class="rd-navbar-wrap">
+          <nav class="rd-navbar rd-navbar-creative rd-navbar-creative-2" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="100px" data-xl-stick-up-offset="112px" data-xxl-stick-up-offset="132px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
+            <div class="rd-navbar-main-outer" style="background-color: #3cc3c1;">
+                <p style="display: block; position: relative; float: left; font-size: 25px; padding-top: 16px; ">电影订票系统</p>
+              <div class="rd-navbar-main">
+                <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
+                  <ul class="rd-navbar-nav">
+                    <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                      <ul class="rd-menu rd-navbar-dropdown">
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us.html">About Us</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="what-we-offer.html">What We Offer</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="our-team.html">Our Team</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="pricing-list.html">Pricing List</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404-page.html">404 Page</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="coming-soon.html">Coming Soon</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="privacy-policy.html">Privacy Policy</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="search-results.html">Search Results</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="login">管理员入口</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <!-- 影院封面 -->
+      <section class="breadcrumbs-custom" style="margin-top: 70px;">
+        <div class="parallax-container" data-parallax-img="{{ cinmea[4] }}">
+          <div class="breadcrumbs-custom-body parallax-content context-dark">
+            <div class="container">
+              <h2 class="text-transform-capitalize breadcrumbs-custom-title">{{ cinmea[1] }}</h2>
+              <h5 class="breadcrumbs-custom-text">地址：{{ cinmea[2] }}</h5>
+              <h5 class="breadcrumbs-custom-text">联系电话：{{ cinmea[3] }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="breadcrumbs-custom-footer">
+          <div class="container">
+            <ul class="breadcrumbs-custom-path"> 
+              <!-- 路径 -->
+              <li><a href="index">Home</a></li>
+              <li><a href="CameraList">{{ cinmea[1] }}</a></li>
+              <li><a href="CameraDetail">影片列表</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 电影列表 -->
+      <section class="section section-xxl bg-default" style="padding-top: 50px;">
+        <div class="container">
+          <h2 class="text-transform-capitalize wow fadeScale">热映电影</h2>
+          <div class="row row-lg row-30 row-lg-50">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <!-- 影片列表-->
+              {% if messages == 'done' %}
+              {% for item in result %}
+              <article class="product wow fadeInRight">
+                <div class="product-body">
+                  <div class="product-figure"><img src="{{ item[4] }}" alt="" width="196" height="134"/>
+                  </div>
+                  <h5 class="product-title"><a href="single-product.html">{{ item[0] }}</a></h5>
+                  <div class="product-price-wrap">
+                    <div class="product-price">{{ item[7] }}</div>
+                  </div>
+                </div><span class="product-badge product-badge-sale">热映</span>
+                <div class="product-button-wrap">
+                  <div class="product-button"><a class="button button-secondary button-zakaria fl-bigmug-line-search74" href="single-product.html"></a></div>
+                  <div class="product-button"><a class="button button-primary button-zakaria fl-bigmug-line-shopping202" href="#"></a></div>
+                </div>
+              </article>
+              {% endfor %}
+              {% elif messages == 'none' %}
+              <div class="alert alert-danger" role="alert">该影院暂无影片信息！</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+        
+      <!-- Page Footer-->
+      <footer class="section footer-modern footer-modern-2">
+        <div class="footer-modern-panel text-center">
+          <div class="container">
+            <p class="rights"><span>Copyright &copy; 天津大学软件工程2020春季</span></p>
+            <p>项目地址：<a class="link" href="https://github.com/lilyht/MovieBookingSystem" style="color: write;">https://github.com/lilyht/MovieBookingSystem</a></p>
+
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="static/js/core.min.js"></script>
+    <script src="static/js/script.js"></script>
+  </body>
+</html>
