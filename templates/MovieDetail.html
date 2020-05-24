@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+	<title>电影详情页</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script src="/cdn-cgi/apps/head/3ts2ksMwXvKRuG480KNifJ2_JNM.js"></script>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CLato%7CKalam:300,400,700">
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  </head>
+  <body>
+	<div class="preloader"></div>
+	<div class="page">
+      <!-- Page Header-->
+      <header class="section page-header header-creative-wrap context-dark">
+        <!-- RD Navbar-->
+        <div class="rd-navbar-wrap">
+          <nav class="rd-navbar rd-navbar-creative rd-navbar-creative-2" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="100px" data-xl-stick-up-offset="112px" data-xxl-stick-up-offset="132px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
+            <div class="rd-navbar-main-outer" style="background-color: #3cc3c1;">
+                <p style="display: block; position: relative; float: left; font-size: 25px; padding-top: 16px; ">电影订票系统</p>
+              <div class="rd-navbar-main">
+                <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
+                  <ul class="rd-navbar-nav">
+                    <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                      <ul class="rd-menu rd-navbar-dropdown">
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us.html">About Us</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="what-we-offer.html">What We Offer</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="our-team.html">Our Team</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="pricing-list.html">Pricing List</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404-page.html">404 Page</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="coming-soon.html">Coming Soon</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="privacy-policy.html">Privacy Policy</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="search-results.html">Search Results</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="login">管理员入口</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <!-- 影片详情 -->
+      <section class="section section-sm section-first bg-default">
+        <div class="container">
+          <div class="row row-30">
+            <div class="col-lg-6">
+              <div class="slick-vertical slick-product">
+                <!-- Slick Carousel-->
+                <div class="slick-slider carousel-parent" id="carousel-parent" data-items="1" data-swipe="true" data-child="#child-carousel" data-for="#child-carousel">
+                  <div class="item">
+                    <div class="slick-product-figure"><img src="{{ movieinfo[4] }}" alt="" width="530" height="480"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="single-product">
+                <h3 class="text-transform-none font-weight-medium">{{ movieinfo[0] }}</h3>
+                <div class="group-md group-middle">
+                  <div class="single-product-price">￥{{ movieinfo[7] }}</div>
+                  <!-- <div class="single-product-rating"><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star-half"></span></div> -->
+                </div>
+                <hr>
+                <!-- 影片简介 -->
+                <p>{{ movieinfo[5] }}</p>
+                <hr class="hr-gray-100">
+                <ul class="list list-description">
+                  <li><span>时长：</span><span>{{ movieinfo[3] }} 分钟</span></li>
+                  <li><span>上映时间：</span><span>{{ movieinfo[2] }}</span></li>
+                  <li><span>票价：</span><span>￥{{ movieinfo[7] }}</span></li>
+                  <li><span>预告片：</span><span><a href="{{ movieinfo[6] }}">观看预告片</a></span></li>
+                </ul>
+                <hr class="hr-gray-100">
+                
+              </div>
+            </div>
+          </div>
+          <!-- Bootstrap tabs-->
+          <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
+            <!-- Nav tabs-->
+            
+            <!-- Tab panes-->
+            <div class="tab-content tab-content-1">
+              <div class="tab-pane fade show active" id="tabs-1-1">
+                <h4 class="text-transform-none font-weight-medium">预定影片</h4>
+                <form action="{{ url_for('MovieDetail') }}" method="POST">
+                  <div class="row row-20 row-md-30">
+                    <div class="col-lg-8">
+                      <div class="row row-20 row-md-30">
+                        <div class="col-sm-6">
+                          <div class="form-wrap">
+                            <input class="form-input" id="contact-first-name-2" type="text" name="name" data-constraints="@Required"/>
+                            <label class="form-label" for="contact-first-name-2">姓名</label>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-wrap">
+                            <input class="form-input" id="contact-phone-2" type="text" name="phone" data-constraints="@Numeric"/>
+                            <label class="form-label" for="contact-phone-2">电话</label>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-wrap">
+                              <input class="form-input" id="contact-last-name-2" type="text" name="addr" data-constraints="@Required"/>
+                              <label class="form-label" for="contact-last-name-2">收货地址</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-wrap">
+                              <input class="form-input" id="contact-message-2" type="text" name="more"/>
+                              <label class="form-label" for="contact-message-2">备注</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-wrap">
+                              <input class="form-input" id="contact-message-1" type="text" name="seatrank"/>
+                              <label class="form-label" for="contact-message-1">座位等级</label>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="group-xs group-middle" style="margin-left: 15px;">
+                        <div class="product-stepper">
+                          购票数量：<br/><input class="form-input" type="number" data-zeros="true" value="1" min="1" max="1000">
+                        </div>
+                        <!-- <div><a class="button button-lg button-primary button-zakaria" href="#">Add to cart</a></div> -->
+                    </div>
+                  </div>
+                  <input class="button button-lg button-primary button-zakaria" type="submit" name="action" value="提交订单" >
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+        
+      <!-- Page Footer-->
+      <footer class="section footer-modern footer-modern-2">
+        <div class="footer-modern-panel text-center">
+          <div class="container">
+            <p class="rights"><span>Copyright &copy; 天津大学软件工程2020春季</span></p>
+            <p>项目地址：<a class="link" href="https://github.com/lilyht/MovieBookingSystem" style="color: write;">https://github.com/lilyht/MovieBookingSystem</a></p>
+
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="static/js/core.min.js"></script>
+    <script src="static/js/script.js"></script>
+  </body>
+</html>

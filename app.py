@@ -105,7 +105,6 @@ def CameraList():
             return render_template('CameraList.html', messages=msg)
     elif request.method == 'POST':
         print('POST')
-        # TODO: 跳转到相应的影院内部页面
         # TODO: msg为空，待解决
         cinemaID = request.form.get('cinemaID')
         # print(cinemaID)
@@ -116,7 +115,7 @@ def CameraList():
 def CameraDetail():
     if request.method == 'GET':
         print('GET')
-        render_template('CameraDetail.html')
+        return render_template('CameraDetail.html')
     elif request.method == 'POST':
         # 从影院点击进来的是POST方法
         print('POST')
@@ -148,6 +147,49 @@ def CameraDetail():
             print("NULL")
             msg = "none"
             return render_template('CameraDetail.html', cinmea=cinmea, messages=msg)
+
+@app.route('/MovieDetail', methods=['GET', 'POST'])
+def MovieDetail():
+    msg = ''
+    if request.method == 'GET':
+        print('GET')
+        return render_template('MovieDetail.html')
+    
+    # TODO: post方法未处理好，提交订单与显示页面有点重了
+    # elif request.method == 'POST' and request.form["action"] == "提交订单":
+    #     print("用户提交订单")
+    #     name = request.form.get(['name'])
+    #     addr = request.form.get(['addr'])
+    #     phone = request.form.get(['phone'])
+    #     seatrank = request.form.get(['seatrank'])
+    #     print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
+    elif request.method == 'POST':
+        print('MovieDetail - POST')
+        cinemaID = request.form.get('CinemaID')
+        movie = request.form.get('Moive')
+        print(cinemaID)
+        print(movie)
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+        sql = "SELECT * from Movie WHERE cinemaID = {} AND movie = '{}'".format(cinemaID, movie)
+        cursor.execute(sql)
+        db.commit()
+        movieinfo = cursor.fetchone()
+        print(movieinfo)
+        msg = 'done'
+        return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
+    
+
+
+# def check():
+#     if request.method == 'POST':
+#         print('check - POST')
+#         name = request.form.get(['name'])
+#         print(name)
 
 
 if __name__ == '__main__':

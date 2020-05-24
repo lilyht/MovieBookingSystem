@@ -95,15 +95,17 @@
                 <div class="product-body">
                   <div class="product-figure"><img src="{{ item[4] }}" alt="" width="196" height="134"/>
                   </div>
-                  <h5 class="product-title"><a href="single-product.html">{{ item[0] }}</a></h5>
+                  <h5 class="product-title"><a href="single-product.html"></a>{{ item[0] }}</a></h5>
                   <div class="product-price-wrap">
-                    <div class="product-price">{{ item[7] }}</div>
+                    <div class="product-price">￥{{ item[7] }}</div>
                   </div>
+                  <form method="post" action="{{ url_for('MovieDetail') }}" method="POST">
+                    <input class="form-input" type="text" name="Moive" value={{ item[0] }} style="display: none;"/>
+                    <input class="form-input" type="text" name="CinemaID" value="{{ item[1] }}" style="display: none;"/>
+                    <button class="button button-lg button-primary button-zakaria" type="submit" style="padding: 10px 20px; margin-top: 10px;">查看影片信息</button>
+                  </form>
                 </div><span class="product-badge product-badge-sale">热映</span>
-                <div class="product-button-wrap">
-                  <div class="product-button"><a class="button button-secondary button-zakaria fl-bigmug-line-search74" href="single-product.html"></a></div>
-                  <div class="product-button"><a class="button button-primary button-zakaria fl-bigmug-line-shopping202" href="#"></a></div>
-                </div>
+                
               </article>
               {% endfor %}
               {% elif messages == 'none' %}
