@@ -1,6 +1,10 @@
 #-*- coding=utf-8 -*-
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
+import datetime
+import time
+import string
+import random;
 import os
 import sys
 # 重新载入模块，得到更新后的模块
@@ -15,8 +19,7 @@ app = Flask(__name__)
 def indexpage():
     if request.method == 'GET':
         return render_template('indexPage.html')
-    elif request.method == 'GET':
-        return render_template('indexPage.html')
+  
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -152,21 +155,9 @@ def CameraDetail():
 def MovieDetail():
     msg = ''
     if request.method == 'GET':
-        print('GET')
-        return render_template('MovieDetail.html')
-    
-    # TODO: post方法未处理好，提交订单与显示页面有点重了
-    # elif request.method == 'POST' and request.form["action"] == "提交订单":
-    #     print("用户提交订单")
-    #     name = request.form.get(['name'])
-    #     addr = request.form.get(['addr'])
-    #     phone = request.form.get(['phone'])
-    #     seatrank = request.form.get(['seatrank'])
-    #     print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
-    elif request.method == 'POST':
-        print('MovieDetail - POST')
-        cinemaID = request.form.get('CinemaID')
-        movie = request.form.get('Moive')
+        print('MovieDetail - GET')
+        cinemaID = request.args.get('CinemaID')
+        movie = request.args.get('Moive')
         print(cinemaID)
         print(movie)
         db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
@@ -181,7 +172,50 @@ def MovieDetail():
         movieinfo = cursor.fetchone()
         print(movieinfo)
         msg = 'done'
-        return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
+        return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)   
+    elif request.method == 'POST':
+        print("用户提交订单")
+        movie = request.form.get('Movie')
+        cinemaID = request.form.get('CinemaID')
+        price = request.form.get('price')
+        price = float(price)
+        buynum = request.form.get('buynum')
+        buynum = int(buynum)
+        print(buynum)
+        name = request.form.get('name')
+        addr = request.form.get('addr')
+        phone = request.form.get('phone')
+        seatrank = request.form.get('seatrank')
+        tansactiontime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # print(tansactiontime)
+        print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
+
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+        sql = "SELECT count(*) from MOrder"
+        cursor.execute(sql)
+        db.commit()
+        ordernum = cursor.fetchone()  # 总订单数
+        # print(ordernum[0])
+        seatnum = ''
+        for i in range (buynum):
+            r = random.randint(0,100)
+            seatnum = seatrank + str(r) + ' ' + seatnum
+        print(seatnum)
+        cost = buynum * price
+        print(cost)
+        orderID = str(ordernum[0]+1)
+        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+        print(sql)
+        cursor.execute(sql)
+        db.commit()
+        # TODO: 提示提交订单成功，等待派送，考完试再写这块就行
+
+        return render_template('index.html')
     
 
 

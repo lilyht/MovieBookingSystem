@@ -99,7 +99,7 @@
                   <div class="product-price-wrap">
                     <div class="product-price">￥{{ item[7] }}</div>
                   </div>
-                  <form method="post" action="{{ url_for('MovieDetail') }}" method="POST">
+                  <form action="{{ url_for('MovieDetail') }}" method="GET">
                     <input class="form-input" type="text" name="Moive" value={{ item[0] }} style="display: none;"/>
                     <input class="form-input" type="text" name="CinemaID" value="{{ item[1] }}" style="display: none;"/>
                     <button class="button button-lg button-primary button-zakaria" type="submit" style="padding: 10px 20px; margin-top: 10px;">查看影片信息</button>
