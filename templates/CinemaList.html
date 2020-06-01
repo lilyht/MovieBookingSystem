@@ -44,7 +44,7 @@
                 <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
                   <ul class="rd-navbar-nav">
                     <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CinemaList">影院列表</a></li>
                     <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
                       <ul class="rd-menu rd-navbar-dropdown">
                         <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us">About Us</a>
@@ -78,7 +78,7 @@
           <div class="breadcrumbs-custom-body parallax-content context-dark">
             <div class="container">
               <h2 class="text-transform-capitalize breadcrumbs-custom-title">影院列表</h2>
-              <h5 class="breadcrumbs-custom-text">Camera List</h5>
+              <h5 class="breadcrumbs-custom-text">Cinema List</h5>
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@
             <ul class="breadcrumbs-custom-path"> 
               <!-- 路径 -->
               <li><a href="index">Home</a></li>
-              <li><a href="CameraList">影院列表</a></li>
+              <li><a href="CinemaList">影院列表</a></li>
             </ul>
           </div>
         </div>
@@ -106,7 +106,7 @@
                     <p class="team-modern-text">电话：{{ item[3] }}</p>
                   </article>
                   <div>
-                    <form method="post" action="{{ url_for('CameraDetail') }}" method="POST">
+                    <form action="{{ url_for('CinemaDetail') }}" method="POST">
                       <input class="form-input" type="text" name="cinemaID" value={{ item[0] }} style="display: none;"/>
                       <button class="button button-lg button-primary button-zakaria" type="submit" style="padding: 10px 20px;">进入影院</button>
                     </form>

@@ -79,10 +79,43 @@ def login():
                 msg = "fail2"
             return render_template('login.html', messages=msg, username=username, userRole=adminRole)
 
+# 影片列表
+@app.route('/MovieList', methods=['GET', 'POST'])
+def MovieList():
+    msg = ''
+    # 连接数据库，默认数据库用户名root，密码空
+    db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+    cursor = db.cursor()
+    try:
+        cursor.execute("use MBDB")
+    except:
+        print("Error: unable to use database!")
+    sql = "SELECT * from Movie"
+    cursor.execute(sql)
+    db.commit()
+    res = cursor.fetchall()
 
+    if request.method == 'GET':
+        print('GET')
+        if len(res) != 0:
+            msg = "done"
+            print(msg)
+            return render_template('MovieList.html', result=res, messages=msg)
+        else:
+            print("NULL")
+            msg = "none"
+            return render_template('MovieList.html', messages=msg)
+    # elif request.method == 'POST':
+    #     print('POST')
+    #     # TODO: msg为空，待解决
+    #     cinemaID = request.form.get('cinemaID')
+    #     # print(cinemaID)
+    #     print(msg)
+    #     return render_template('CameraDetail.html' ,messages=msg, cinemaID=cinemaID)
 
-@app.route('/CameraList', methods=['GET', 'POST'])
-def CameraList():
+# 影院列表
+@app.route('/CinemaList', methods=['GET', 'POST'])
+def CinemaList():
     msg = ''
     # 连接数据库，默认数据库用户名root，密码空
     db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
@@ -101,24 +134,25 @@ def CameraList():
         if len(res) != 0:
             msg = "done"
             print(msg)
-            return render_template('CameraList.html', result=res, messages=msg)
+            return render_template('CinemaList.html', result=res, messages=msg)
         else:
             print("NULL")
             msg = "none"
-            return render_template('CameraList.html', messages=msg)
+            return render_template('CinemaList.html', messages=msg)
     elif request.method == 'POST':
         print('POST')
         # TODO: msg为空，待解决
         cinemaID = request.form.get('cinemaID')
         # print(cinemaID)
         print(msg)
-        return render_template('CameraDetail.html' ,messages=msg, cinemaID=cinemaID)
+        return render_template('CinemaDetail.html' ,messages=msg, cinemaID=cinemaID)
 
-@app.route('/CameraDetail', methods=['GET', 'POST'])
-def CameraDetail():
+# 影院详情
+@app.route('/CinemaDetail', methods=['GET', 'POST'])
+def CinemaDetail():
     if request.method == 'GET':
         print('GET')
-        return render_template('CameraDetail.html')
+        return render_template('CinemaDetail.html')
     elif request.method == 'POST':
         # 从影院点击进来的是POST方法
         print('POST')
@@ -134,8 +168,8 @@ def CameraDetail():
         sql1 = "SELECT * from Cinema WHERE cinemaID = {}".format(cinemaID)
         cursor.execute(sql1)
         db.commit()
-        cinmea = cursor.fetchone()
-        print(cinmea)
+        cinema = cursor.fetchone()
+        print(cinema)
 
         sql = "SELECT * from Movie WHERE cinemaID = {}".format(cinemaID)
         cursor.execute(sql)
@@ -145,11 +179,11 @@ def CameraDetail():
         if len(res) != 0:
             msg = "done"
             print(msg)
-            return render_template('CameraDetail.html', cinmea=cinmea, result=res, messages=msg)
+            return render_template('CinemaDetail.html', cinmea=cinema, result=res, messages=msg)
         else:
             print("NULL")
             msg = "none"
-            return render_template('CameraDetail.html', cinmea=cinmea, messages=msg)
+            return render_template('CinemaDetail.html', cinmea=cinema, messages=msg)
 
 @app.route('/MovieDetail', methods=['GET', 'POST'])
 def MovieDetail():
@@ -157,7 +191,7 @@ def MovieDetail():
     if request.method == 'GET':
         print('MovieDetail - GET')
         cinemaID = request.args.get('CinemaID')
-        movie = request.args.get('Moive')
+        movie = request.args.get('Movie')
         print(cinemaID)
         print(movie)
         db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
@@ -217,6 +251,80 @@ def MovieDetail():
 
         return render_template('index.html')
     
+@app.route('/MovieDetail2', methods=['GET', 'POST'])
+def MovieDetail2():
+    msg = ''
+    if request.method == 'GET':
+        print('MovieDetail2 - GET')
+        movie = request.args.get('movie')
+        print(movie)
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+        sql = "SELECT * from Movie WHERE movie = '{}'".format(movie)
+        print(sql)
+        cursor.execute(sql)
+        db.commit()
+        movieinfo = cursor.fetchone()
+        print(movieinfo)
+        msg = 'done'
+
+        # 查找含有该影片的影院
+        sql = "SELECT DISTINCT M.cinemaID, C.cname FROM MOVIE M, CINEMA C WHERE M.movie = '{}' AND M.cinemaID = C.cinemaID;".format(movie)
+        print(sql)
+        cursor.execute(sql)
+        db.commit()
+        cinemaIDlist = cursor.fetchall()
+        return render_template('MovieDetail2.html', movieinfo=movieinfo, messages=msg, cinemaIDlist=cinemaIDlist)   
+    elif request.method == 'POST':
+        print("用户提交订单2")
+        movie = request.form.get('Movie')
+        cinemaID = request.form.get('cinemaname')
+        print(cinemaID)
+        print(type(cinemaID))
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+        
+        price = request.form.get('price')
+        price = float(price)
+        buynum = request.form.get('buynum')
+        buynum = int(buynum)
+        print(buynum)
+        name = request.form.get('name')
+        addr = request.form.get('addr')
+        phone = request.form.get('phone')
+        seatrank = request.form.get('seatrank')
+        tansactiontime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # print(tansactiontime)
+        print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
+
+        sql = "SELECT count(*) from MOrder"
+        cursor.execute(sql)
+        db.commit()
+        ordernum = cursor.fetchone()  # 总订单数
+        # print(ordernum[0])
+        seatnum = ''
+        for i in range (buynum):
+            r = random.randint(0,100)
+            seatnum = seatrank + str(r) + ' ' + seatnum
+        print(seatnum)
+        cost = buynum * price
+        print(cost)
+        orderID = str(ordernum[0]+1)
+        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+        print(sql)
+        cursor.execute(sql)
+        db.commit()
+        # TODO: 提示提交订单成功，等待派送，考完试再写这块
+
+        return render_template('index.html')
 
 
 # def check():

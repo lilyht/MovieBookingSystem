@@ -103,20 +103,32 @@
             <!-- Tab panes-->
             <div class="tab-content tab-content-1">
               <div class="tab-pane fade show active" id="tabs-1-1">
-                <h4 class="text-transform-none font-weight-medium">预定影片</h4>
-                <form action="{{ url_for('MovieDetail') }}" method="POST">
-                  <input class="form-input" type="text" name="Movie" value={{ movieinfo[0] }} style="display: none;"/>
-                  <input class="form-input" type="text" name="CinemaID" value="{{ movieinfo[1] }}" style="display: none;"/>
+                <div class="title-classic">
+                    <h4 class="title-classic-title">预定影片</h4>
+                    <p class="title-classic-subtitle">预定影票，需要选择影院和座位等级，并填写个人信息</p>
+                </div>
+                <form action="{{ url_for('MovieDetail2') }}" method="POST">
+                  <input class="form-input" type="text" name="Movie" value="{{ movieinfo[0] }}" style="display: none;"/>
+                  <!-- <input class="form-input" type="text" name="CinemaID" value="{{ movieinfo[1] }}" style="display: none;"/> -->
                   <input class="form-input" type="text" name="price" value="{{ movieinfo[7] }}" style="display: none;"/>
-
                   <div class="row row-20 row-md-30">
                     <div class="col-lg-8">
-                      <div class="row row-20 row-md-30">
+                      <div class="row row-20 row-md-30">                        
                         <div class="col-sm-6">
                           <div class="form-wrap">
-                            <input class="form-input" id="contact-first-name-2" type="text" name="name" data-constraints="@Required"/>
-                            <label class="form-label" for="contact-first-name-2">姓名</label>
+                            <select name="cinemaname" class="form-input">
+                                {% for cinemainfo in cinemaIDlist %}
+                                <option class="rd-dropdown-item" value="{{cinemainfo[0]}}">{{cinemainfo[1]}}</option>
+                                {% endfor %}
+                            </select>
                           </div>
+                        </div>
+                        
+                        <div class="col-sm-6">
+                            <div class="form-wrap">
+                              <input class="form-input" id="contact-first-name-2" type="text" name="name" data-constraints="@Required"/>
+                              <label class="form-label" for="contact-first-name-2">姓名</label>
+                            </div>
                         </div>
                         <div class="col-sm-6">
                           <div class="form-wrap">

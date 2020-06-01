@@ -29,7 +29,7 @@
                 <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
                   <ul class="rd-navbar-nav">
                     <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CinemaList">影院列表</a></li>
                     <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
                       <ul class="rd-menu rd-navbar-dropdown">
                         <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us.html">About Us</a>
@@ -75,8 +75,8 @@
             <ul class="breadcrumbs-custom-path"> 
               <!-- 路径 -->
               <li><a href="index">Home</a></li>
-              <li><a href="CameraList">{{ cinmea[1] }}</a></li>
-              <li><a href="CameraDetail">影片列表</a></li>
+              <li><a href="CinemaList">{{ cinmea[1] }}</a></li>
+              <li><a href="CinemaDetail">影片列表</a></li>
             </ul>
           </div>
         </div>
@@ -87,10 +87,11 @@
         <div class="container">
           <h2 class="text-transform-capitalize wow fadeScale">热映电影</h2>
           <div class="row row-lg row-30 row-lg-50">
-            <div class="col-sm-6 col-md-4 col-lg-3">
+            
               <!-- 影片列表-->
               {% if messages == 'done' %}
               {% for item in result %}
+              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-4">
               <article class="product wow fadeInRight">
                 <div class="product-body">
                   <div class="product-figure"><img src="{{ item[4] }}" alt="" width="196" height="134"/>
@@ -100,18 +101,19 @@
                     <div class="product-price">￥{{ item[7] }}</div>
                   </div>
                   <form action="{{ url_for('MovieDetail') }}" method="GET">
-                    <input class="form-input" type="text" name="Moive" value={{ item[0] }} style="display: none;"/>
+                    <input class="form-input" type="text" name="Movie" value={{ item[0] }} style="display: none;"/>
                     <input class="form-input" type="text" name="CinemaID" value="{{ item[1] }}" style="display: none;"/>
                     <button class="button button-lg button-primary button-zakaria" type="submit" style="padding: 10px 20px; margin-top: 10px;">查看影片信息</button>
                   </form>
                 </div><span class="product-badge product-badge-sale">热映</span>
                 
               </article>
+            </div>
               {% endfor %}
               {% elif messages == 'none' %}
               <div class="alert alert-danger" role="alert">该影院暂无影片信息！</div>
               {% endif %}
-            </div>
+            
           </div>
         </div>
       </section>
