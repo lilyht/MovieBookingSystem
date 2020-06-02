@@ -326,6 +326,15 @@ def MovieDetail2():
 
         return render_template('index.html')
 
+# 系统管理员页面
+@app.route('/sysadminPage', methods=['GET', 'POST'])
+def sysadminPage():
+    msg = ''
+    if request.method == 'GET':
+        print('sysadminPage - GET')
+        # movie = request.args.get('movie')
+        return render_template('sysadminPage.html')   
+
 
 # def check():
 #     if request.method == 'POST':

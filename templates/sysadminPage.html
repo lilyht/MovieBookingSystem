@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
-	<title>电影订票系统首页</title>
+	<title>系统管理员页</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,28 +29,8 @@
 	</style>
   </head>
   <body>
-	<div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
-	<div class="preloader">
-		<div class="preloader-body">
-			<div class="cssload-bell">
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-				<div class="cssload-circle">
-					<div class="cssload-inner"></div>
-				</div>
-			</div>
-		</div>
-    </div>
+	<!-- <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div> -->
+	<div class="preloader"></div>
 	<div class="page">
       <!-- Page Header-->
       <header class="section page-header header-creative-wrap context-dark">
@@ -58,14 +38,13 @@
         <div class="rd-navbar-wrap">
           <nav class="rd-navbar rd-navbar-creative rd-navbar-creative-2" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="100px" data-xl-stick-up-offset="112px" data-xxl-stick-up-offset="132px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
             <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
-            <div class="rd-navbar-main-outer" style="background-color: rgba(0,0,0,0.3);">
+            <div class="rd-navbar-main-outer" style="background-color: #3cc3c1;">
                 <p style="display: block; position: relative; float: left; font-size: 25px; padding-top: 16px; ">电影订票系统</p>
               <div class="rd-navbar-main">
                 <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
                   <ul class="rd-navbar-nav">
                     <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="CinemaList">影院列表</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="MovieList">影片列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
                     <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
                       <ul class="rd-menu rd-navbar-dropdown">
                         <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us.html">About Us</a>
@@ -94,42 +73,68 @@
           </nav>
         </div>
       </header>
-      <!-- Swiper-->
-      <section class="section swiper-container swiper-slider swiper-slider-4" data-loop="true" data-autoplay="5000">
-        <div class="swiper-wrapper context-dark">
-          <div class="swiper-slide swiper-slide-1" data-slide-bg="static/images/枕上书1.jpg">
-            <div class="swiper-slide-caption section-md text-sm-left">
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-8 col-md-7">
-                    <h2 class="swiper-title-1" data-caption-animate="fadeInLeft" data-caption-delay="100">三生三世枕上书 <br>
-                    </h2>
-                    <h5 class="swiper-title-2 text-width-medium" data-caption-animate="fadeInLeft" data-caption-delay="250">主演：高伟光 迪丽热巴</h5>
-                    <div class="button-wrap" data-caption-animate="fadeInLeft" data-caption-delay="400"><a class="button button-lg button-shadow-5 button-default-outline button-zakaria" href="grid-shop.html" style="font-size: 16px;">观 看</a></div>
+      <!-- login in system -->
+      <section class="section section-xl bg-default text-md-left">
+        <div class="container">
+          <div class="title-classic">
+            <h4 class="title-classic-title">欢迎系统管理员xxx！</h4><br><br/>
+          </div>
+          <h6>您具有系统最高权限</h6>
+        </div>
+      </section>
+
+      <section class="section section-xxl bg-default text-md-left" style="padding-top: 30px;">
+        <div class="container">
+            <div class="row row-30 row-md-60 row-lg-70 justify-content-center align-items-md-center">
+            <!-- 功能 -->
+            <!-- TODO: 完成每个功能的网页、链接过来 -->
+            <div class="col-xl-12">
+                <div class="row row-30">
+                  <div class="col-sm-6 col-lg-4 wow fadeInLeft" data-wow-delay=".2s">
+                    <article class="box-icon-creative">
+                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
+                        <div class="unit-left">
+                          <div class="box-icon-creative-icon fl-bigmug-line-video163"></div>
+                        </div>
+                        <div class="unit-body">
+                          <h5 class="box-icon-creative-title"><a href="#">创建影院信息</a></h5>
+                          <p class="box-icon-creative-text">创建新的影院 | 录入影院信息</p>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="col-sm-6 col-lg-4 wow fadeInLeft">
+                    <article class="box-icon-creative">
+                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
+                        <div class="unit-left">
+                          <div class="box-icon-creative-icon fl-bigmug-line-sand14"></div>
+                        </div>
+                        <div class="unit-body">
+                          <h5 class="box-icon-creative-title"><a href="#">信息更新</a></h5>
+                          <p class="box-icon-creative-text">更新影院信息</p>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="col-sm-6 col-lg-4 wow fadeInLeft" data-wow-delay=".1s">
+                    <article class="box-icon-creative">
+                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
+                        <div class="unit-left">
+                          <div class="box-icon-creative-icon fl-bigmug-line-graphical8"></div>
+                        </div>
+                        <div class="unit-body">
+                          <h5 class="box-icon-creative-title"><a href="#">指派影院管理员</a></h5>
+                          <p class="box-icon-creative-text">为每个影院指定一位影院管理员</p>
+                        </div>
+                      </div>
+                    </article>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="swiper-slide swiper-slide-2" data-slide-bg="static/images/slide-2.jpg">
-            <div class="swiper-slide-caption section-md text-center">
-              <div class="container">
-                <h2 class="swiper-title-1" data-caption-animate="fadeInLeft" data-caption-delay="100">Make Your Food Organic</h2>
-                <h5 class="swiper-title-2" data-caption-animate="fadeInRight" data-caption-delay="250">With our wide variety of vegan & organic food products, we are sure <br class="d-none d-md-block">to help you make the right choice to start your day.
-                </h5>
-                <div class="button-wrap" data-caption-animate="fadeInUp" data-caption-delay="400"><a class="button button-lg button-shadow-5 button-default-outline button-zakaria" href="grid-shop.html">Shop now</a></div>
-              </div>
-            </div>
-          </div>
         </div>
-        <!-- Swiper Pagination-->
-        <div class="swiper-pagination"></div>
-        <!-- Swiper Navigation-->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </section>     
-      
-      
+      </section>
+        
       <!-- Page Footer-->
       <footer class="section footer-modern footer-modern-2">
         <div class="footer-modern-panel text-center">
@@ -141,8 +146,6 @@
         </div>
       </footer>
     </div>
-    <div class="snackbars" id="form-output-global"></div>
-
     <script src="static/js/core.min.js"></script>
     <script src="static/js/script.js"></script>
   </body>
