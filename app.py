@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import datetime
 import time
 import string
-import random;
+import random
 import os
 import sys
 # 重新载入模块，得到更新后的模块
@@ -12,7 +12,13 @@ import MySQLdb
 import importlib
 importlib.reload(sys)
 
+UPLOAD_FOLDER = '/static/images'
+ALLOWED_EXTENSIONS = set(['jpg', 'png'])
+
+
 app = Flask(__name__)
+# app.secret_key = 'some_secret'
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -20,6 +26,10 @@ def indexpage():
     if request.method == 'GET':
         return render_template('indexPage.html')
   
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -333,9 +343,53 @@ def sysadminPage():
     if request.method == 'GET':
         print('sysadminPage - GET')
         # movie = request.args.get('movie')
-        return render_template('sysadminPage.html')   
+        return render_template('sysadminPage.html') 
 
+# 系统管理员——创建新影院
+@app.route('/createCinema', methods=['GET', 'POST'])
+def createCinema():
+    if request.method == 'GET':
+        print('createCinema - GET')
+        # movie = request.args.get('movie')
+        return render_template('createCinema.html') 
+    elif request.method == 'POST':
+        print('createCinema - POST')
+        cname = request.form.get('cname')
+        caddr = request.form.get('caddr')
+        cphone = request.form.get('cphone')
+        acapacity = request.form.get('acapacity')
+        bcapacity = request.form.get('bcapacity')
+        # print("{}-{}-{}-{}-{}".format(cname, caddr, cphone, acapacity, bcapacity))
+        f = request.files['the_file']
 
+        if f and allowed_file(f.filename):
+            filename = secure_filename(f.filename)
+            f.save('static/images/' + filename)
+            # flash("load file successfully!")
+            imagesrc = ""
+            imagesrc = 'static/images/' + filename
+            print(imagesrc)
+
+            # 查库
+            db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+            cursor = db.cursor()
+            try:
+                cursor.execute("use MBDB")
+            except:
+                print("Error: unable to use database!")
+            sql1 = "SELECT MAX(cinemaID) from Cinema"
+            cursor.execute(sql1)
+            db.commit()
+            cnum = cursor.fetchone()  # 总影院数
+            cinemaID = cnum[0] + 1
+            
+            sql = "INSERT INTO Cinema VALUES ({}, '{}', '{}', '{}', '{}', {}, {})".format(cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
+            cursor.execute(sql)
+            db.commit()
+            return render_template("createCinema.html", messages="done")
+        else:
+            return render_template("createCinema.html", messages="unsuit")
+        
 # def check():
 #     if request.method == 'POST':
 #         print('check - POST')
