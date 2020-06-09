@@ -389,7 +389,58 @@ def createCinema():
             return render_template("createCinema.html", messages="done")
         else:
             return render_template("createCinema.html", messages="unsuit")
-        
+
+# 系统管理员——指派电影院管理员
+@app.route('/assign', methods=['GET', 'POST'])
+def assign():
+    if request.method == 'GET':
+        print('assign - GET')
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+
+        # 查询待分配电影院
+        sql = "select C.cinemaID, C.cname from cinema C WHERE C.cinemaID not in (select distinct CA.cinemaID from CinAdmin CA WHERE CA.cinemaID is not NULL);"
+        print(sql)
+        cursor.execute(sql)
+        db.commit()
+        res1 = cursor.fetchall()
+        res1len = len(res1)
+        print(res1len)
+
+        # 查询空闲电影院管理员
+        sql2 = "SELECT * from CinAdmin WHERE cinemaID is NULL"
+        print(sql2)
+        cursor.execute(sql2)
+        db.commit()
+        res2 = cursor.fetchall()
+        res2len = len(res2)
+        print(res2len)
+        return render_template('assign.html', res1=res1, res2=res2, res1len=res1len, res2len=res2len)
+    elif request.method == 'POST':
+        cinemaID = request.form.get('cinemaname')
+        adminname = request.form.get('adminname')
+        print(cinemaID)
+        print(adminname)
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+
+        # 查询待分配电影院
+        sql = "UPDATE CinAdmin SET cinemaID = {} WHERE adminname = '{}'".format(cinemaID, adminname)
+        print(sql)
+        cursor.execute(sql)
+        db.commit()
+        msg = 'done'
+        return render_template('assign.html', messages=msg)
+
+
 # def check():
 #     if request.method == 'POST':
 #         print('check - POST')

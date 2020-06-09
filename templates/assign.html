@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
-	<title>系统管理员页</title>
+	<title>指派电影院管理员</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,15 +14,28 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 	<style>
-		.ie-panel {
-			display: none;
-			background: #212121;
-			padding: 10px 0;
-			box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);
-			clear: both;text-align:center;
-			position: relative;
-			z-index: 1;
-		}
+    .subbtn {
+      position: relative;
+      display: inline-block;
+      background: #3cc3c1;
+      border: none;
+      border-radius: 5px;
+      padding: 4px 12px;
+      overflow: hidden;
+      color: #fff;
+      text-decoration: none;
+      text-indent: 0;
+      line-height: 20px;
+    }
+	.subbtn:hover {
+    background: #f9e95e;
+      /* border-color: #9DD2D8; */
+      color: #000;
+      text-decoration: none;
+      transition-duration: 500ms;
+    }
+
+
 		html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {
 			display: block;
 		}
@@ -74,66 +87,84 @@
         </div>
       </header>
       <!-- login in system -->
-      <section class="section section-xl bg-default text-md-left">
+      <section class="section section-xl bg-default text-md-left" style="padding-bottom: 15px;">
         <div class="container">
           <div class="title-classic">
             <h4 class="title-classic-title">欢迎系统管理员xxx！</h4><br><br/>
           </div>
-          <h6>您具有系统最高权限</h6>
+          为电影院指派电影院管理员。注意一个影院只能有一个电影院管理员，一个电影院管理员也只能负责一个影院的管理工作！
+          <!-- <h6>创建影院</h6> -->
         </div>
       </section>
 
-      <section class="section section-xxl bg-default text-md-left" style="padding-top: 30px;">
+    <!-- 指派电影院对应的管理员 -->
+    <section class="section section-xl bg-default text-md-left" style="padding-top: 15px;">
         <div class="container">
-            <div class="row row-30 row-md-60 row-lg-70 justify-content-center align-items-md-center">
-            <!-- 功能 -->
-            <!-- TODO: 完成每个功能的网页、链接过来 -->
-            <div class="col-xl-12">
-                <div class="row row-30">
-                  <div class="col-sm-6 col-lg-4 wow fadeInLeft" data-wow-delay=".2s">
-                    <article class="box-icon-creative">
-                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
-                        <div class="unit-left">
-                          <div class="box-icon-creative-icon fl-bigmug-line-video163"></div>
+            <div class="row row-50 row-md-60">
+                <div class="col-lg-8 col-xl-9">
+                    <form action="{{ url_for('assign') }}" method="POST" enctype="multipart/form-data">
+                        <div class="row row-20 row-md-30">
+                          <div class="col-lg-8">
+                            <div class="row row-20 row-md-30">
+                              <!-- TODO: 这里的框架还差一点没写完 -->
+                              <div class="col-sm-12">
+                                <div class="form-wrap">
+                                  <label class="form-label" for="contact-first-name-2" style="font-size: 17px;">电影院名称</label><br><br>
+                                  <select name="cinemaname" class="form-input">
+                                      {% for item1 in res1 %}
+                                      <option class="rd-dropdown-item" value="{{item1[0]}}">{{item1[1]}}</option>
+                                      {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-sm-12">
+                                <div class="form-wrap">
+                                  <label class="form-label" for="contact-first-name-2" style="font-size: 17px;">电影院管理员账号</label><br><br>
+                                  <select name="adminname" class="form-input">
+                                      {% for item2 in res2 %}
+                                      <option class="rd-dropdown-item" value="{{item2[0]}}">{{item2[0]}}</option>
+                                      {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+        
                         </div>
-                        <div class="unit-body">
-                          <h5 class="box-icon-creative-title"><a href="createCinema">创建影院信息</a></h5>
-                          <p class="box-icon-creative-text">创建新的影院 | 录入影院信息</p>
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-                  <div class="col-sm-6 col-lg-4 wow fadeInLeft">
-                    <article class="box-icon-creative">
-                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
-                        <div class="unit-left">
-                          <div class="box-icon-creative-icon fl-bigmug-line-sand14"></div>
-                        </div>
-                        <div class="unit-body">
-                          <h5 class="box-icon-creative-title"><a href="#">信息更新</a></h5>
-                          <p class="box-icon-creative-text">更新影院信息</p>
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-                  <div class="col-sm-6 col-lg-4 wow fadeInLeft" data-wow-delay=".1s">
-                    <article class="box-icon-creative">
-                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
-                        <div class="unit-left">
-                          <div class="box-icon-creative-icon fl-bigmug-line-graphical8"></div>
-                        </div>
-                        <div class="unit-body">
-                          <h5 class="box-icon-creative-title"><a href="assign">指派影院管理员</a></h5>
-                          <p class="box-icon-creative-text">为每个影院指定一位影院管理员</p>
-                        </div>
-                      </div>
-                    </article>
-                  </div>
+                        <input class="button button-lg button-primary button-zakaria" type="submit" name="action" value="指派" >
+                      </form>
                 </div>
-              </div>
+                <div class="col-lg-4 col-xl-3">
+                    <div class="aside row row-30 row-md-50 justify-content-md-between">
+                      
+                      <div class="aside-item col-sm-6 col-lg-12">
+                        <h6 class="aside-title">待分配电影院<span class="list-categories-number">({{ res1len }})</span></h6>
+                        <ul class="list-marked list-archives d-inline-block d-md-block">
+                          {% for item1 in res1 %}
+                          <li><a href="#">{{ item1[1] }}</a></li>
+                          {% endfor %}
+                          
+                        </ul>
+                      </div>
+                      <div class="aside-item col-sm-6 col-lg-12">
+                        <h6 class="aside-title">待指派电影院管理员<span class="list-categories-number">({{ res2len }})</span></h6>
+                        <ul class="list-marked list-archives d-inline-block d-md-block">
+                          {% for item2 in res2 %}
+                          <li><a href="#">{{ item2[0] }}</a></li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                </div>
             </div>
-        </div>
-      </section>
+            </div>
+    </section>
+    
+    {% if messages == "done" %}
+        <script>alert("指派电影院管理员成功！")</script>
+        <script type='text/javascript'>window.location.href='sysadminPage'</script>
+    {% endif %}
         
       <!-- Page Footer-->
       <footer class="section footer-modern footer-modern-2">
