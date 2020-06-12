@@ -29,6 +29,22 @@
 	</style>
   </head>
   <body>
+
+    <script>
+      function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = decodeURIComponent(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    </script>
+
 	<!-- <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div> -->
 	<div class="preloader"></div>
 	<div class="page">
@@ -77,20 +93,32 @@
       <section class="section section-xl bg-default text-md-left">
         <div class="container">
           <div class="title-classic">
-            <h4 class="title-classic-title">欢迎系统管理员xxx！</h4><br><br/>
+            <h4 class="title-classic-title" id="sysadminname">未登录！</h4><br><br/>
           </div>
-          <h6>您具有系统最高权限</h6>
+          <h6>系统管理员具有系统最高权限</h6>
         </div>
       </section>
+      <script>
+        var a = GetRequest();
+        var sysadminname=a['sysadmin'];
+        console.log(a)
+        console.log(sysadminname)
+        if(sysadminname != null) {
+          document.getElementById('sysadminname').innerHTML = "欢迎系统管理员 " + sysadminname + " !";
+        }
+        else {
+          document.getElementById('sysadminname').innerHTML = "未登录";
+        }
+        
+      </script>
 
       <section class="section section-xxl bg-default text-md-left" style="padding-top: 30px;">
         <div class="container">
             <div class="row row-30 row-md-60 row-lg-70 justify-content-center align-items-md-center">
             <!-- 功能 -->
-            <!-- TODO: 完成每个功能的网页、链接过来 -->
             <div class="col-xl-12">
                 <div class="row row-30">
-                  <div class="col-sm-6 col-lg-4 wow fadeInLeft" data-wow-delay=".2s">
+                  <div class="col-sm-6 col-lg-6 wow fadeInLeft" data-wow-delay=".2s">
                     <article class="box-icon-creative">
                       <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
                         <div class="unit-left">
@@ -103,20 +131,7 @@
                       </div>
                     </article>
                   </div>
-                  <div class="col-sm-6 col-lg-4 wow fadeInLeft">
-                    <article class="box-icon-creative">
-                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
-                        <div class="unit-left">
-                          <div class="box-icon-creative-icon fl-bigmug-line-sand14"></div>
-                        </div>
-                        <div class="unit-body">
-                          <h5 class="box-icon-creative-title"><a href="#">信息更新</a></h5>
-                          <p class="box-icon-creative-text">更新影院信息</p>
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-                  <div class="col-sm-6 col-lg-4 wow fadeInLeft" data-wow-delay=".1s">
+                  <div class="col-sm-6 col-lg-6 wow fadeInLeft" data-wow-delay=".1s">
                     <article class="box-icon-creative">
                       <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
                         <div class="unit-left">
@@ -148,5 +163,6 @@
     </div>
     <script src="static/js/core.min.js"></script>
     <script src="static/js/script.js"></script>
+    
   </body>
 </html>

@@ -111,15 +111,24 @@
           </form>
         </div>
       </section>
-        
+    
+    <input id="username" value="{{username}}" style="display: none;">
     {% if messages == "done1" %}
         <script>alert("登录成功！欢迎系统管理员！")</script>
-        <script type='text/javascript'>window.location.href='sysadminPage'</script>
+        <script type='text/javascript'>
+          var sysadminname = document.getElementById("username").value;
+          console.log(sysadminname)
+          window.location.href='sysadminPage?sysadmin='+sysadminname;
+        </script>
     {% elif messages == "fail1" %}
         <script>alert("登录失败！您没有系统管理员权限或登录信息出错。")</script>
     {% elif messages == "done2" %}
         <script>alert("登录成功！欢迎影院管理员！")</script>
-        <script type='text/javascript'>window.location.href='MerchantIndex'</script>
+        <script type='text/javascript'>
+          var cinadminname = document.getElementById("username").value;
+          console.log(cinadminname)
+          window.location.href='cinadminPage?cinadmin='+cinadminname;
+        </script>
     {% elif messages == "fail2" %}
         <script>alert("登录失败！您没有影院管理员权限或登录信息出错。")</script>
     {% endif %}

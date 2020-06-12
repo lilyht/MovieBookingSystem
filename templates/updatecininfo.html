@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
-	<title>创建新影院</title>
+	<title>更新影院信息</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,15 +34,9 @@
       text-decoration: none;
       transition-duration: 500ms;
     }
-
-
-		html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {
-			display: block;
-		}
 	</style>
   </head>
   <body>
-	<!-- <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div> -->
 	<div class="preloader"></div>
 	<div class="page">
       <!-- Page Header-->
@@ -90,27 +84,27 @@
       <section class="section section-xl bg-default text-md-left" style="padding-bottom: 20px;">
         <div class="container">
           <div class="title-classic">
-            <h4 class="title-classic-title">欢迎系统管理员xxx！</h4><br><br/>
+            <h4 class="title-classic-title">欢迎影院管理员！</h4><br><br/>
           </div>
           <!-- <h6>创建影院</h6> -->
         </div>
       </section>
-
+      <!-- TODO: 参数传递没弄好 -->
       <!-- 创建影院的表单 -->
     <section class="section section-sm section-first bg-default" style="padding-top: 20px;">
       <div class="container">
         <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
           <div class="tab-content tab-content-1">
             <div class="tab-pane fade show active" id="tabs-1-1">
-              <h4 class="text-transform-none font-weight-medium">创建影院</h4>
+              <h4 class="text-transform-none font-weight-medium">更新您所负责的影院信息</h4>
 
-              <form action="{{ url_for('createCinema') }}" method="POST" enctype="multipart/form-data">
+              <form action="{{ url_for('updatecininfo') }}" method="POST" enctype="multipart/form-data">
                 <div class="row row-20 row-md-30">
                   <div class="col-lg-8">
                     <div class="row row-20 row-md-30">
                       <div class="col-sm-12">
                         <div class="form-wrap">
-                          <input class="form-input" id="contact-first-name-2" type="text" name="cname" data-constraints="@Required"/>
+                          <input class="form-input" id="contact-first-name-2" type="text" name="cname" value="" data-constraints="@Required"/>
                           <label class="form-label" for="contact-first-name-2">电影院名称</label>
                         </div>
                       </div>
@@ -150,7 +144,7 @@
                   </div>
 
                 </div>
-                <input class="button button-lg button-primary button-zakaria" type="submit" name="action" value="创建" >
+                <input class="button button-lg button-primary button-zakaria" type="submit" name="action" value="更新" >
               </form>
             </div>
           </div>
@@ -158,8 +152,8 @@
       </div>
     </section>
     {% if messages == "done" %}
-        <script>alert("创建新影院成功！")</script>
-        <script type='text/javascript'>window.location.href='sysadminPage'</script>
+        <script>alert("更新影院信息成功！")</script>
+        <script type='text/javascript'>window.location.href='cinadminPage'</script>
     {% elif messages == "unsuit" %}
         <script>alert("文件格式不符合要求，请重新上传!")</script>
     {% endif %}

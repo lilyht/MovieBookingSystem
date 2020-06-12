@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
-	<title>创建新影院</title>
+	<title>影院管理员页</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,35 +14,37 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 	<style>
-    .subbtn {
-      position: relative;
-      display: inline-block;
-      background: #3cc3c1;
-      border: none;
-      border-radius: 5px;
-      padding: 4px 12px;
-      overflow: hidden;
-      color: #fff;
-      text-decoration: none;
-      text-indent: 0;
-      line-height: 20px;
-    }
-	.subbtn:hover {
-    background: #f9e95e;
-      /* border-color: #9DD2D8; */
-      color: #000;
-      text-decoration: none;
-      transition-duration: 500ms;
-    }
-
-
+		.ie-panel {
+			display: none;
+			background: #212121;
+			padding: 10px 0;
+			box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);
+			clear: both;text-align:center;
+			position: relative;
+			z-index: 1;
+		}
 		html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {
 			display: block;
 		}
 	</style>
   </head>
   <body>
-	<!-- <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="static/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div> -->
+
+    <script>
+        function GetRequest() {
+          var url = location.search; //获取url中"?"符后的字串
+          var theRequest = new Object();
+          if (url.indexOf("?") != -1) {
+              var str = url.substr(1);
+              strs = str.split("&");
+              for (var i = 0; i < strs.length; i++) {
+                  theRequest[strs[i].split("=")[0]] = decodeURIComponent(strs[i].split("=")[1]);
+              }
+          }
+          return theRequest;
+      }
+      </script>
+
 	<div class="preloader"></div>
 	<div class="page">
       <!-- Page Header-->
@@ -87,82 +89,65 @@
         </div>
       </header>
       <!-- login in system -->
-      <section class="section section-xl bg-default text-md-left" style="padding-bottom: 20px;">
+      <section class="section section-xl bg-default text-md-left">
         <div class="container">
           <div class="title-classic">
-            <h4 class="title-classic-title">欢迎系统管理员xxx！</h4><br><br/>
+            <h4 class="title-classic-title" id="cinadminname">未登录！</h4><br><br/>
           </div>
-          <!-- <h6>创建影院</h6> -->
+          <h6>影院管理员具有对所负责的影院修改、更新信息和上传上映影片等权限</h6>
         </div>
       </section>
+      <script>
+        var a = GetRequest();
+        var cinadminname=a['cinadmin'];
+        console.log(a)
+        console.log(cinadminname)
+        if(cinadminname != null) {
+          document.getElementById('cinadminname').innerHTML = "欢迎影院管理员 " + cinadminname + " !";
+        }
+        else {
+          document.getElementById('cinadminname').innerHTML = "未登录";
+        }
+      </script>
 
-      <!-- 创建影院的表单 -->
-    <section class="section section-sm section-first bg-default" style="padding-top: 20px;">
-      <div class="container">
-        <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
-          <div class="tab-content tab-content-1">
-            <div class="tab-pane fade show active" id="tabs-1-1">
-              <h4 class="text-transform-none font-weight-medium">创建影院</h4>
-
-              <form action="{{ url_for('createCinema') }}" method="POST" enctype="multipart/form-data">
-                <div class="row row-20 row-md-30">
-                  <div class="col-lg-8">
-                    <div class="row row-20 row-md-30">
-                      <div class="col-sm-12">
-                        <div class="form-wrap">
-                          <input class="form-input" id="contact-first-name-2" type="text" name="cname" data-constraints="@Required"/>
-                          <label class="form-label" for="contact-first-name-2">电影院名称</label>
+      <section class="section section-xxl bg-default text-md-left" style="padding-top: 30px;">
+        <div class="container">
+            <div class="row row-30 row-md-60 row-lg-70 justify-content-center align-items-md-center">
+            <!-- 功能 -->
+            <!-- TODO: 完成每个功能的网页、链接过来 -->
+            <div class="col-xl-12">
+                <div class="row row-30">
+                  <div class="col-sm-6 col-lg-6 wow fadeInLeft">
+                    <article class="box-icon-creative">
+                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
+                        <div class="unit-left">
+                          <div class="box-icon-creative-icon fl-bigmug-line-sand14"></div>
+                        </div>
+                        <div class="unit-body">
+                          <h5 class="box-icon-creative-title"><a href="updatecininfo">影院信息更新</a></h5>
+                          <p class="box-icon-creative-text">对您负责的影院进行信息更新</p>
                         </div>
                       </div>
-                      <!-- <div class="col-sm-6">
-                        <div class="form-wrap">
-                          <input class="form-input" id="contact-phone-1" type="text" name="cinemaID" data-constraints="@Numeric"/>
-                          <label class="form-label" for="contact-phone-1">电影院编号</label>
-                        </div>
-                      </div> -->
-                      <div class="col-sm-6">
-                          <div class="form-wrap">
-                            <input class="form-input" id="contact-last-name-2" type="text" name="caddr" data-constraints="@Required"/>
-                            <label class="form-label" for="contact-last-name-2">地址</label>
-                          </div>
-                      </div>
-                      <div class="col-sm-6">
-                          <div class="form-wrap">
-                            <input class="form-input" id="contact-phone-2" type="text" name="cphone"/>
-                            <label class="form-label" for="contact-phone-2">电话</label>
-                          </div>
-                      </div>
-                      <div class="col-sm-6">
-                          <div class="form-wrap">
-                            <input class="form-input" id="contact-message-1" type="text" name="acapacity"/>
-                            <label class="form-label" for="contact-message-1">A类座位数量</label>
-                          </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-wrap">
-                          <input class="form-input" id="contact-message-2" type="text" name="bcapacity"/>
-                          <label class="form-label" for="contact-message-2">B类座位数量</label>
-                        </div>
-                    </div>
-                    <input type="file" name="the_file" size="100" style="padding-left: 15px;" /><br />
-			              <!-- <input class="subbtn" type="submit" value="上传影院图片" /> -->
-                    </div>
+                    </article>
                   </div>
-
+                  <div class="col-sm-6 col-lg-6 wow fadeInLeft" data-wow-delay=".1s">
+                    <article class="box-icon-creative">
+                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
+                        <div class="unit-left">
+                          <div class="box-icon-creative-icon fl-bigmug-line-graphical8"></div>
+                        </div>
+                        <div class="unit-body">
+                          <h5 class="box-icon-creative-title"><a href="#">上传新影片</a></h5>
+                          <p class="box-icon-creative-text">为您负责的影院上传新的放映影片信息</p>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
                 </div>
-                <input class="button button-lg button-primary button-zakaria" type="submit" name="action" value="创建" >
-              </form>
+              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </section>
-    {% if messages == "done" %}
-        <script>alert("创建新影院成功！")</script>
-        <script type='text/javascript'>window.location.href='sysadminPage'</script>
-    {% elif messages == "unsuit" %}
-        <script>alert("文件格式不符合要求，请重新上传!")</script>
-    {% endif %}
+      </section>
         
       <!-- Page Footer-->
       <footer class="section footer-modern footer-modern-2">

@@ -345,6 +345,15 @@ def sysadminPage():
         # movie = request.args.get('movie')
         return render_template('sysadminPage.html') 
 
+# 影院管理员页面
+@app.route('/cinadminPage', methods=['GET', 'POST'])
+def cinadminPage():
+    msg = ''
+    if request.method == 'GET':
+        print('cinadminPage - GET')
+        # movie = request.args.get('movie')
+        return render_template('cinadminPage.html') 
+
 # 系统管理员——创建新影院
 @app.route('/createCinema', methods=['GET', 'POST'])
 def createCinema():
@@ -440,6 +449,62 @@ def assign():
         msg = 'done'
         return render_template('assign.html', messages=msg)
 
+
+# 影院管理员——更新影院信息
+@app.route('/updatecininfo', methods=['GET', 'POST'])
+def updatecininfo():
+    if request.method == 'GET':
+        print('updatecininfo - GET')
+        msg = ''
+        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+        cursor = db.cursor()
+        try:
+            cursor.execute("use MBDB")
+        except:
+            print("Error: unable to use database!")
+        #TODO: 获取参数、更新影院信息
+        sql1 = "SELECT cinemaID from CinAdmin WHERE adminname = '{}'".format()
+        cursor.execute(sql1)
+        db.commit()
+        cnum = cursor.fetchone()  # 总影院数
+        
+        return render_template('updatecininfo.html', messages=msg, result=res)
+    elif request.method == 'POST':
+        print('updatecininfo - POST')
+        cname = request.form.get('cname')
+        caddr = request.form.get('caddr')
+        cphone = request.form.get('cphone')
+        acapacity = request.form.get('acapacity')
+        bcapacity = request.form.get('bcapacity')
+        # print("{}-{}-{}-{}-{}".format(cname, caddr, cphone, acapacity, bcapacity))
+        f = request.files['the_file']
+
+        if f and allowed_file(f.filename):
+            filename = secure_filename(f.filename)
+            f.save('static/images/' + filename)
+            # flash("load file successfully!")
+            imagesrc = ""
+            imagesrc = 'static/images/' + filename
+            print(imagesrc)
+
+            db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
+            cursor = db.cursor()
+            try:
+                cursor.execute("use MBDB")
+            except:
+                print("Error: unable to use database!")
+            sql1 = "SELECT MAX(cinemaID) from Cinema"
+            cursor.execute(sql1)
+            db.commit()
+            cnum = cursor.fetchone()  # 总影院数
+            cinemaID = cnum[0] + 1
+            
+            sql = "INSERT INTO Cinema VALUES ({}, '{}', '{}', '{}', '{}', {}, {})".format(cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
+            cursor.execute(sql)
+            db.commit()
+            return render_template("updatecininfo.html", messages="done")
+        else:
+            return render_template("updatecininfo.html", messages="unsuit")
 
 # def check():
 #     if request.method == 'POST':
