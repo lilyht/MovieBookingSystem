@@ -92,29 +92,17 @@
       <section class="section section-xl bg-default text-md-left">
         <div class="container">
           <div class="title-classic">
-            <h4 class="title-classic-title" id="cinadminname">未登录！</h4><br><br/>
+            <h4 class="title-classic-title" id="cinadminname">{{cinadminname}}</h4><br><br/>
           </div>
           <h6>影院管理员具有对所负责的影院修改、更新信息和上传上映影片等权限</h6>
         </div>
       </section>
-      <script>
-        var a = GetRequest();
-        var cinadminname=a['cinadmin'];
-        console.log(a)
-        console.log(cinadminname)
-        if(cinadminname != null) {
-          document.getElementById('cinadminname').innerHTML = "欢迎影院管理员 " + cinadminname + " !";
-        }
-        else {
-          document.getElementById('cinadminname').innerHTML = "未登录";
-        }
-      </script>
+      
 
       <section class="section section-xxl bg-default text-md-left" style="padding-top: 30px;">
         <div class="container">
             <div class="row row-30 row-md-60 row-lg-70 justify-content-center align-items-md-center">
             <!-- 功能 -->
-            <!-- TODO: 完成每个功能的网页、链接过来 -->
             <div class="col-xl-12">
                 <div class="row row-30">
                   <div class="col-sm-6 col-lg-6 wow fadeInLeft">
@@ -124,7 +112,7 @@
                           <div class="box-icon-creative-icon fl-bigmug-line-sand14"></div>
                         </div>
                         <div class="unit-body">
-                          <h5 class="box-icon-creative-title"><a href="updatecininfo">影院信息更新</a></h5>
+                          <h5 class="box-icon-creative-title"><a id="alink" href="updatecininfo">影院信息更新</a></h5>
                           <p class="box-icon-creative-text">对您负责的影院进行信息更新</p>
                         </div>
                       </div>
@@ -137,7 +125,7 @@
                           <div class="box-icon-creative-icon fl-bigmug-line-graphical8"></div>
                         </div>
                         <div class="unit-body">
-                          <h5 class="box-icon-creative-title"><a href="#">上传新影片</a></h5>
+                          <h5 class="box-icon-creative-title"><a id="blink" href="#">上传新影片</a></h5>
                           <p class="box-icon-creative-text">为您负责的影院上传新的放映影片信息</p>
                         </div>
                       </div>
@@ -148,7 +136,33 @@
             </div>
         </div>
       </section>
+      <script>
+        var a = GetRequest();
+        var cinadminname=a['cinadmin'];
+        console.log(a)
+        if(cinadminname != null) {
+          console.log("首次登录")
+        }
+        else{
+          cinadminname = document.getElementById('cinadminname').innerHTML;
+        }
+        console.log(cinadminname)
+        document.getElementById('cinadminname').innerHTML = "欢迎影院管理员 " + cinadminname + " !";
+        console.log(document.getElementById('cinadminname').innerHTML)
+
+        //根据id获取超链接,设置href属性
+        var aObj = document.getElementById("alink");
+        aObj.href = "updatecininfo?cinname=" + cinadminname;
+        console.log("a链接已更改");
+        console.log(aObj.href);
+
+        var bObj = document.getElementById("blink");
+        bObj.href = "uploadmovie?cinname=" + cinadminname;
+        console.log("b链接已更改");
+        console.log(bObj.href);
         
+      </script>
+      
       <!-- Page Footer-->
       <footer class="section footer-modern footer-modern-2">
         <div class="footer-modern-panel text-center">

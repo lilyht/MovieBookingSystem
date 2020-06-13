@@ -89,8 +89,7 @@
           <!-- <h6>创建影院</h6> -->
         </div>
       </section>
-      <!-- TODO: 参数传递没弄好 -->
-      <!-- 创建影院的表单 -->
+      <!-- 更新影院的表单 -->
     <section class="section section-sm section-first bg-default" style="padding-top: 20px;">
       <div class="container">
         <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
@@ -98,48 +97,40 @@
             <div class="tab-pane fade show active" id="tabs-1-1">
               <h4 class="text-transform-none font-weight-medium">更新您所负责的影院信息</h4>
 
-              <form action="{{ url_for('updatecininfo') }}" method="POST" enctype="multipart/form-data">
+              <form action="{{ url_for('updatecininfo') }}" method="POST" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" enctype="multipart/form-data">
                 <div class="row row-20 row-md-30">
                   <div class="col-lg-8">
                     <div class="row row-20 row-md-30">
                       <div class="col-sm-12">
                         <div class="form-wrap">
-                          <input class="form-input" id="contact-first-name-2" type="text" name="cname" value="" data-constraints="@Required"/>
-                          <label class="form-label" for="contact-first-name-2">电影院名称</label>
+                          <label class="form-label" for="contact-first-name-2">电影院名称</label><br>
+                          <input class="form-input" id="contact-first-name-2" type="text" name="cname" value="{{res[1]}}" readonly="readonly" data-constraints="@Required"/>
                         </div>
                       </div>
-                      <!-- <div class="col-sm-6">
-                        <div class="form-wrap">
-                          <input class="form-input" id="contact-phone-1" type="text" name="cinemaID" data-constraints="@Numeric"/>
-                          <label class="form-label" for="contact-phone-1">电影院编号</label>
-                        </div>
-                      </div> -->
                       <div class="col-sm-6">
                           <div class="form-wrap">
-                            <input class="form-input" id="contact-last-name-2" type="text" name="caddr" data-constraints="@Required"/>
-                            <label class="form-label" for="contact-last-name-2">地址</label>
+                            <label class="form-label">地址</label><br>
+                            <input class="form-input" id="contact-last-name-2" type="text" name="caddr" value="{{res[2]}}" data-constraints="@Required"/>
                           </div>
                       </div>
                       <div class="col-sm-6">
                           <div class="form-wrap">
-                            <input class="form-input" id="contact-phone-2" type="text" name="cphone"/>
-                            <label class="form-label" for="contact-phone-2">电话</label>
+                            <label for="contact-phone-2">电话</label><br>
+                            <input class="form-input" id="contact-phone-2" type="text" name="cphone" value="{{res[3]}}" data-constraints="@Numeric"/>
                           </div>
                       </div>
                       <div class="col-sm-6">
                           <div class="form-wrap">
-                            <input class="form-input" id="contact-message-1" type="text" name="acapacity"/>
-                            <label class="form-label" for="contact-message-1">A类座位数量</label>
+                            <label class="form-label" for="contact-message-1">A类座位数量</label><br>
+                            <input class="form-input" id="contact-message-1" type="text" name="acapacity" value="{{res[5]}}"/>
                           </div>
                       </div>
                       <div class="col-sm-6">
                         <div class="form-wrap">
-                          <input class="form-input" id="contact-message-2" type="text" name="bcapacity"/>
-                          <label class="form-label" for="contact-message-2">B类座位数量</label>
+                          <label class="form-label" for="contact-message-2">B类座位数量</label><br>
+                          <input class="form-input" id="contact-message-2" type="text" name="bcapacity" value="{{res[6]}}"/>
                         </div>
                     </div>
-                    <input type="file" name="the_file" size="100" style="padding-left: 15px;" /><br />
-			              <!-- <input class="subbtn" type="submit" value="上传影院图片" /> -->
                     </div>
                   </div>
 
@@ -154,8 +145,6 @@
     {% if messages == "done" %}
         <script>alert("更新影院信息成功！")</script>
         <script type='text/javascript'>window.location.href='cinadminPage'</script>
-    {% elif messages == "unsuit" %}
-        <script>alert("文件格式不符合要求，请重新上传!")</script>
     {% endif %}
         
       <!-- Page Footer-->
