@@ -105,7 +105,7 @@
             <!-- 功能 -->
             <div class="col-xl-12">
                 <div class="row row-30">
-                  <div class="col-sm-6 col-lg-6 wow fadeInLeft">
+                  <div class="col-sm-12 col-lg-6 wow fadeInLeft">
                     <article class="box-icon-creative">
                       <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
                         <div class="unit-left">
@@ -118,7 +118,7 @@
                       </div>
                     </article>
                   </div>
-                  <div class="col-sm-6 col-lg-6 wow fadeInLeft" data-wow-delay=".1s">
+                  <div class="col-sm-12 col-lg-6 wow fadeInLeft" data-wow-delay=".1s">
                     <article class="box-icon-creative">
                       <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
                         <div class="unit-left">
@@ -127,6 +127,19 @@
                         <div class="unit-body">
                           <h5 class="box-icon-creative-title"><a id="blink" href="#">上传新影片</a></h5>
                           <p class="box-icon-creative-text">为您负责的影院上传新的放映影片信息</p>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="col-sm-12 col-lg-6 wow fadeInLeft" data-wow-delay=".1s">
+                    <article class="box-icon-creative">
+                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
+                        <div class="unit-left">
+                          <div class="box-icon-creative-icon fl-bigmug-line-opened25"></div>
+                        </div>
+                        <div class="unit-body">
+                          <h5 class="box-icon-creative-title"><a id="clink" href="#">派送票员送票</a></h5>
+                          <p class="box-icon-creative-text">派送票员送票</p>
                         </div>
                       </div>
                     </article>
@@ -160,6 +173,11 @@
         bObj.href = "uploadmovie?cinname=" + cinadminname;
         console.log("b链接已更改");
         console.log(bObj.href);
+
+        var cObj = document.getElementById("clink");
+        cObj.href = "delivery?cinname=" + cinadminname;
+        console.log("c链接已更改");
+        console.log(cObj.href);
         
       </script>
       

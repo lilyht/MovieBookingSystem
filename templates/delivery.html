@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+	<title>通知送票员送票</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script src="/cdn-cgi/apps/head/3ts2ksMwXvKRuG480KNifJ2_JNM.js"></script>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CLato%7CKalam:300,400,700">
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+	<style>
+    .subbtn {
+      position: relative;
+      display: inline-block;
+      background: #3cc3c1;
+      border: none;
+      border-radius: 5px;
+      padding: 4px 12px;
+      overflow: hidden;
+      color: #fff;
+      text-decoration: none;
+      text-indent: 0;
+      line-height: 20px;
+    }
+	.subbtn:hover {
+    background: #f9e95e;
+      /* border-color: #9DD2D8; */
+      color: #000;
+      text-decoration: none;
+      transition-duration: 500ms;
+    }
+	</style>
+  </head>
+  <body>
+	<div class="preloader"></div>
+	<div class="page">
+      <!-- Page Header-->
+      <header class="section page-header header-creative-wrap context-dark">
+        <!-- RD Navbar-->
+        <div class="rd-navbar-wrap">
+          <nav class="rd-navbar rd-navbar-creative rd-navbar-creative-2" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="100px" data-xl-stick-up-offset="112px" data-xxl-stick-up-offset="132px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
+            <div class="rd-navbar-main-outer" style="background-color: #3cc3c1;">
+                <p style="display: block; position: relative; float: left; font-size: 25px; padding-top: 16px; ">电影订票系统</p>
+              <div class="rd-navbar-main">
+                <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
+                  <ul class="rd-navbar-nav">
+                    <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                      <ul class="rd-menu rd-navbar-dropdown">
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us.html">About Us</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="what-we-offer.html">What We Offer</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="our-team.html">Our Team</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="pricing-list.html">Pricing List</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404-page.html">404 Page</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="coming-soon.html">Coming Soon</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="privacy-policy.html">Privacy Policy</a>
+                        </li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="search-results.html">Search Results</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="login">管理员入口</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- login in system -->
+      <section class="section section-xl bg-default text-md-left" style="padding-bottom: 20px;">
+        <div class="container">
+          <div class="title-classic">
+            <h4 class="title-classic-title">欢迎影院管理员！</h4><br><br/>
+          </div>
+          <!-- <h6>创建影院</h6> -->
+        </div>
+      </section>
+      <!-- 更新影院的表单 -->
+    <section class="section section-sm section-first bg-default" style="padding-top: 20px;">
+      <div class="container">
+        <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
+          <div class="tab-content tab-content-1">
+            <div class="tab-pane fade show active" id="tabs-1-1">
+            {% if messages == "empty" %}
+            <h4 class="text-transform-none font-weight-medium">暂无订单等待派送</h4>
+            {% elif messages == "have" %}
+              <h4 class="text-transform-none font-weight-medium">以下订单等待您指定送票员派送</h4>
+
+              <div class="row row-50 row-md-60">
+                <div class="col-lg-8 col-xl-9">
+                <div class="inset-xl-right-100">
+                    <div class="row row-50 row-md-60 row-lg-80">
+                        {% for item in orderlist %}
+                        <div class="col-12">
+                            <div class="box-comment" style="padding-bottom: 30px; border-bottom: 1px solid #e1e1e1;">
+                                <div class="unit flex-column flex-sm-row unit-spacing-md">
+                                    <div class="unit-body">
+                                        <div class="group-sm group-justify">
+                                            <div>
+                                                <div class="group-xs group-middle">
+                                                <h5 class="box-comment-author"><a href="#">{{item[1]}}</a></h5><a class="box-comment-reply" href="#">￥{{item[8]}}</a>
+                                                </div>
+                                            </div>
+                                            <div class="box-comment-time">
+                                                <time datetime="2020-08-30">{{item[9]}}</time>
+                                            </div>
+                                        </div>
+                                        <p class="box-comment-text"> 订单编号：{{item[0]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  地址：{{item[6]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  联系电话：{{item[5]}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                </div>
+              </div>
+              
+              <form action="{{ url_for('updatecininfo') }}" method="POST" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" enctype="multipart/form-data">
+                <!-- TODO: 这部分没写全 -->
+                <input class="button button-lg button-primary button-zakaria" type="submit" name="action" value="发送送票通知" >
+              </form>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% if messages == "done" %}
+        <script>alert("指定送票员成功！")</script>
+        <script type='text/javascript'>window.location.href='cinadminPage'</script>
+    {% endif %}
+        
+      <!-- Page Footer-->
+      <footer class="section footer-modern footer-modern-2">
+        <div class="footer-modern-panel text-center">
+          <div class="container">
+            <p class="rights"><span>Copyright &copy; 天津大学软件工程2020春季</span></p>
+            <p>项目地址：<a class="link" href="https://github.com/lilyht/MovieBookingSystem" style="color: write;">https://github.com/lilyht/MovieBookingSystem</a></p>
+
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="static/js/core.min.js"></script>
+    <script src="static/js/script.js"></script>
+  </body>
+</html>

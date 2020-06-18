@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 import dealwithdb as deal
+import role
 from pypinyin import lazy_pinyin
 import datetime
 import time
@@ -44,51 +45,12 @@ def login():
         print(adminRole)
         print(username)
         # 连接数据库，默认数据库用户名root，密码空
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-
         if adminRole == 'SYSADMIN':  # 系统管理员
-            cursor = db.cursor()
-            try:
-                cursor.execute("use MBDB")
-            except:
-                print("Error: unable to use database!")
-            sql = "SELECT * from SYSADMIN where adminname = '{}' and password = '{}'".format(username, password)
-            cursor.execute(sql)
-            db.commit()
-            res = cursor.fetchall()
-            num = 0
-            for row in res:
-                num = num + 1
-            # 如果存在该管理员且密码正确
-            if num == 1:
-                print("登录成功！欢迎系统管理员！")
-                msg = "done1"
-            else:
-                print("您没有系统管理员权限或登录信息出错。")
-                msg = "fail1"
-            print(msg)
+            msg = role.SysAdminLogin(username, password)
             return render_template('login.html', messages=msg, username=username, userRole=adminRole)
 
         elif adminRole == 'CINADMIN':  # 电影院管理员
-            cursor = db.cursor()
-            try:
-                cursor.execute("use CINADMIN")
-            except:
-                print("Error: unable to use database!")
-            sql = "SELECT * from CINADMIN where adminname = '{}' and password='{}'".format(username, password)
-            cursor.execute(sql)
-            db.commit()
-            res = cursor.fetchall()
-            num = 0
-            for row in res:
-                num = num + 1
-            # 如果存在该电影院管理员且密码正确
-            if num == 1:
-                print("登录成功！欢迎电影院管理员！")
-                msg = "done2"
-            else:
-                print("您没有电影院管理员权限或登录信息出错。")
-                msg = "fail2"
+            msg = role.CinAdminLogin(username, password)
             return render_template('login.html', messages=msg, username=username, userRole=adminRole)
 
 # 影片列表
@@ -96,12 +58,7 @@ def login():
 def MovieList():
     msg = ''
     # 连接数据库，默认数据库用户名root，密码空
-    db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-    cursor = db.cursor()
-    try:
-        cursor.execute("use MBDB")
-    except:
-        print("Error: unable to use database!")
+    db, cursor = deal.connect2db()
     sql = "SELECT * from Movie"
     cursor.execute(sql)
     db.commit()
@@ -117,25 +74,12 @@ def MovieList():
             print("NULL")
             msg = "none"
             return render_template('MovieList.html', messages=msg)
-    # elif request.method == 'POST':
-    #     print('POST')
-    #     # TODO: msg为空，待解决
-    #     cinemaID = request.form.get('cinemaID')
-    #     # print(cinemaID)
-    #     print(msg)
-    #     return render_template('CameraDetail.html' ,messages=msg, cinemaID=cinemaID)
 
 # 影院列表
 @app.route('/CinemaList', methods=['GET', 'POST'])
 def CinemaList():
     msg = ''
-    # 连接数据库，默认数据库用户名root，密码空
-    db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-    cursor = db.cursor()
-    try:
-        cursor.execute("use MBDB")
-    except:
-        print("Error: unable to use database!")
+    db, cursor = deal.connect2db()
     sql = "SELECT * from Cinema"
     cursor.execute(sql)
     db.commit()
@@ -171,12 +115,7 @@ def CinemaDetail():
         cinemaID = request.form.get('cinemaID')
         print(cinemaID)
 
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+        db, cursor = deal.connect2db()
         sql1 = "SELECT * from Cinema WHERE cinemaID = {}".format(cinemaID)
         cursor.execute(sql1)
         db.commit()
@@ -206,12 +145,7 @@ def MovieDetail():
         movie = request.args.get('Movie')
         print(cinemaID)
         print(movie)
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+        db, cursor = deal.connect2db()
         sql = "SELECT * from Movie WHERE cinemaID = {} AND movie = '{}'".format(cinemaID, movie)
         cursor.execute(sql)
         db.commit()
@@ -236,12 +170,8 @@ def MovieDetail():
         # print(tansactiontime)
         print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
 
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+        db, cursor = deal.connect2db()
+
         sql = "SELECT count(*) from MOrder"
         cursor.execute(sql)
         db.commit()
@@ -270,12 +200,7 @@ def MovieDetail2():
         print('MovieDetail2 - GET')
         movie = request.args.get('movie')
         print(movie)
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+        db, cursor = deal.connect2db()
         sql = "SELECT * from Movie WHERE movie = '{}'".format(movie)
         print(sql)
         cursor.execute(sql)
@@ -297,12 +222,8 @@ def MovieDetail2():
         cinemaID = request.form.get('cinemaname')
         print(cinemaID)
         print(type(cinemaID))
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+
+        db, cursor = deal.connect2db()
         
         price = request.form.get('price')
         price = float(price)
@@ -382,12 +303,8 @@ def createCinema():
             print(imagesrc)
 
             # 查库
-            db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-            cursor = db.cursor()
-            try:
-                cursor.execute("use MBDB")
-            except:
-                print("Error: unable to use database!")
+            db, cursor = deal.connect2db()
+
             sql1 = "SELECT MAX(cinemaID) from Cinema"
             cursor.execute(sql1)
             db.commit()
@@ -406,12 +323,7 @@ def createCinema():
 def assign():
     if request.method == 'GET':
         print('assign - GET')
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+        db, cursor = deal.connect2db()
 
         # 查询待分配电影院
         sql = "select C.cinemaID, C.cname from cinema C WHERE C.cinemaID not in (select distinct CA.cinemaID from CinAdmin CA WHERE CA.cinemaID is not NULL);"
@@ -436,12 +348,8 @@ def assign():
         adminname = request.form.get('adminname')
         print(cinemaID)
         print(adminname)
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+
+        db, cursor = deal.connect2db()
 
         # 查询待分配电影院
         sql = "UPDATE CinAdmin SET cinemaID = {} WHERE adminname = '{}'".format(cinemaID, adminname)
@@ -458,12 +366,9 @@ def updatecininfo():
     if request.method == 'GET':
         print('updatecininfo - GET')
         msg = ''
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+
+        db, cursor = deal.connect2db()
+
         #TODO: 获取参数、更新影院信息
         cinname = request.args.get('cinname')
         print(cinname)
@@ -486,12 +391,8 @@ def updatecininfo():
         acapacity = request.form.get('acapacity')
         bcapacity = request.form.get('bcapacity')
         print("{}-{}-{}-{}-{}".format(cname, caddr, cphone, acapacity, bcapacity))
-        db = MySQLdb.connect("localhost", "root", "", "MBDB", charset='utf8')
-        cursor = db.cursor()
-        try:
-            cursor.execute("use MBDB")
-        except:
-            print("Error: unable to use database!")
+        
+        db, cursor = deal.connect2db()
         sql = "UPDATE Cinema SET caddr='{}', cphone='{}', acapacity={}, bcapacity={} WHERE cname = '{}'".format(caddr, cphone, acapacity, bcapacity, cname)
         cursor.execute(sql)
         db.commit()
@@ -549,11 +450,32 @@ def uploadmovie():
         msg = m.insertmovie()
         return render_template('uploadmovie.html', messages=msg)
 
-# def check():
-#     if request.method == 'POST':
-#         print('check - POST')
-#         name = request.form.get(['name'])
-#         print(name)
+
+# 影院管理员——派送票员送票
+@app.route('/delivery', methods=['GET', 'POST'])
+def delivery():
+    if request.method == 'GET':
+        print('delivery - GET')
+        cinname = request.args.get('cinname')
+        print(cinname)
+        db, cursor = deal.connect2db()
+        sql1 = "SELECT cinemaID from CinAdmin WHERE adminname = '{}'".format(cinname)
+        cursor.execute(sql1)
+        db.commit()
+        cinemaID = cursor.fetchone()  # 负责影院的ID
+        print(cinemaID[0])
+
+        sql2 = "SELECT * FROM MOrder WHERE isFinished = 0 AND cinemaID = {}".format(cinemaID[0])
+        cursor.execute(sql2)
+        db.commit()
+        res = cursor.fetchall()
+        reslen = len(res)
+        print(reslen)
+        if reslen == 0:
+            msg = "empty"
+        else:
+            msg = "have"
+        return render_template('delivery.html', cinemaID=cinemaID[0], orderlist=res, messages=msg)
 
 
 if __name__ == '__main__':
