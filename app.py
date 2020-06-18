@@ -1,6 +1,8 @@
 #-*- coding=utf-8 -*-
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
+import dealwithdb as deal
+from pypinyin import lazy_pinyin
 import datetime
 import time
 import string
@@ -503,6 +505,49 @@ def updatecininfo():
 
         return render_template("cinadminPage.html", messages="done", cinadminname=cinadminname)
 
+
+# 影院管理员——上传影片信息
+@app.route('/uploadmovie', methods=['GET', 'POST'])
+def uploadmovie():
+    if request.method == 'GET':
+        print('uploadmovie - GET')
+        cinname = request.args.get('cinname')
+        print(cinname)
+        db, cursor = deal.connect2db()
+        sql1 = "SELECT cinemaID from CinAdmin WHERE adminname = '{}'".format(cinname)
+        cursor.execute(sql1)
+        db.commit()
+        cinemaID = cursor.fetchone()  # 负责影院的ID
+        print(cinemaID[0])
+
+        return render_template('uploadmovie.html', cinemaID=cinemaID[0])
+
+    elif request.method == 'POST':
+        movie = request.form.get('movie')
+        duration = request.form.get('duration')
+        trailer = request.form.get('trailer')
+        fare = request.form.get('fare')
+        request.form.get('trailer')
+        showday =  request.form.get('showday')
+        showtime = request.form.get('showtime')
+        showtime = showday + ' ' + showtime + ':00'
+        intro = request.form.get('intro')
+        f = request.files['the_file']
+        if f and allowed_file(f.filename):
+            filename = secure_filename(''.join(lazy_pinyin(f.filename)))
+            f.save('static/images/' + filename)
+            # flash("load file successfully!")
+            screenshot = ""
+            screenshot = 'static/images/' + filename
+            print(screenshot)
+
+        cinemaID = request.form.get('cinemaID')
+        cinemaID = cinemaID[0]
+
+        #创建影片对象
+        m = deal.MOVIE(movie, cinemaID, showtime, duration, screenshot, intro, trailer, fare)
+        msg = m.insertmovie()
+        return render_template('uploadmovie.html', messages=msg)
 
 # def check():
 #     if request.method == 'POST':
