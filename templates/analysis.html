@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+	<title>系统统计分析页</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script src="/cdn-cgi/apps/head/3ts2ksMwXvKRuG480KNifJ2_JNM.js"></script>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CLato%7CKalam:300,400,700">
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+	<style>
+		.ie-panel {
+			display: none;
+			background: #212121;
+			padding: 10px 0;
+			box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);
+			clear: both;text-align:center;
+			position: relative;
+			z-index: 1;
+		}
+		html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {
+			display: block;
+		}
+	</style>
+  </head>
+  <body>
+
+	<div class="preloader"></div>
+	<div class="page">
+        <!-- Page Header-->
+        <header class="section page-header header-creative-wrap context-dark">
+        <!-- RD Navbar-->
+            <div class="rd-navbar-wrap">
+                <nav class="rd-navbar rd-navbar-creative rd-navbar-creative-2" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="100px" data-xl-stick-up-offset="112px" data-xxl-stick-up-offset="132px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+                <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
+                <div class="rd-navbar-main-outer" style="background-color: #3cc3c1;">
+                    <p style="display: block; position: relative; float: left; font-size: 25px; padding-top: 16px; ">电影订票系统</p>
+                    <div class="rd-navbar-main">
+                    <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
+                        <ul class="rd-navbar-nav">
+                        <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
+                        <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
+                        <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                            <ul class="rd-menu rd-navbar-dropdown">
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us.html">About Us</a>
+                            </li>
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="what-we-offer.html">What We Offer</a>
+                            </li>
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="our-team.html">Our Team</a>
+                            </li>
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="pricing-list.html">Pricing List</a>
+                            </li>
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404-page.html">404 Page</a>
+                            </li>
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="coming-soon.html">Coming Soon</a>
+                            </li>
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="privacy-policy.html">Privacy Policy</a>
+                            </li>
+                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="search-results.html">Search Results</a>
+                            </li>
+                            </ul>
+                        </li>
+                        <li class="rd-nav-item"><a class="rd-nav-link" href="login">管理员入口</a></li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- 数字显示-->
+        <section class="parallax-container" data-parallax-img="static/images/parallax-2.jpg">
+        <div class="parallax-content section-xxl context-dark">
+            <div class="container">
+            <div class="row row-30 justify-content-center">
+                <div class="col-6 col-sm-4">
+                <div class="counter-modern">
+                    <h2 class="counter-modern-number"><span class="counter">{{cinemanum}}</span>
+                    </h2>
+                    <div class="counter-modern-decor"></div>
+                    <h5 class="counter-modern-title">入驻系统的影城数</h5>
+                </div>
+                </div>
+                <div class="col-6 col-sm-4">
+                <div class="counter-modern">
+                    <h2 class="counter-modern-number"><span class="counter">{{movienum}}</span>
+                    </h2>
+                    <div class="counter-modern-decor"></div>
+                    <h5 class="counter-modern-title">影片数</h5>
+                </div>
+                </div>
+                <div class="col-6 col-sm-4">
+                <div class="counter-modern">
+                    <h2 class="counter-modern-number"><span class="counter">{{ordernum}}</span>
+                    </h2>
+                    <div class="counter-modern-decor"></div>
+                    <h5 class="counter-modern-title">平台总销量</h5>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </section>
+        <!-- 最受欢迎影片 -->
+        <section class="section section-sm section-first bg-default">
+            <div class="container">
+                <h2 class="text-transform-capitalize wow fadeScale">最受欢迎影片TOP3</h2>
+                <div class="row row-xl row-30 justify-content-center">
+                {% for movie in toppopular%}
+                <div class="col-sm-6 col-lg-4">
+                    <article class="pricing-classic">
+                    <div class="pricing-classic-header"><img class="pricing-classic-figure" src="{{movie[3]}}" alt="" style="height: 450px;"/>
+                        <div class="pricing-classic-caption">
+                        <div>
+                            <h3 class="pricing-classic-title">{{movie[0]}}</h3>
+                            <div class="pricing-classic-price-wrap">
+                            <div class="pricing-classic-price heading-4">￥{{movie[6]}}</div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="pricing-classic-body">
+                        <ul class="pricing-classic-list">
+                        <li><span>上映时间</span> {{movie[2]}}</li>
+                        </ul>
+                        <!-- <a class="button button-lg button-default-outline button-zakaria" href="#">Add to cart</a> -->
+                    </div>
+                    </article>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- 最受欢迎影院 -->
+        <section class="section section-xxl bg-default">
+            <div class="container">
+              <h2 class="text-transform-capitalize wow fadeScale">最受欢迎影院TOP3</h2>
+              <!-- Owl Carousel-->
+              <div class="owl-carousel owl-style-9" data-items="1" data-sm-items="2" data-md-items="3" data-margin="30" data-dots="true" data-mouse-drag="false">
+                {% for cinema in topcinema %}
+                <article class="team-modern box-sm wow slideInUp" data-wow-delay=".3s"><a class="team-modern-figure" href="#"><img src="{{cinema[3]}}" alt="" style="height: 180px;" /></a>
+                  <h5 class="team-modern-name"><a href="#">{{cinema[2]}}</a></h5>
+                  <!-- <p class="team-modern-text">Jane is our #1 expert in domestic Sales Management.</p> -->
+                  
+                </article>
+                {% endfor %}
+              </div>
+            </div>
+          </section>
+    
+
+      
+        <!-- Page Footer-->
+        <footer class="section footer-modern footer-modern-2">
+            <div class="footer-modern-panel text-center">
+                <div class="container">
+                <p class="rights"><span>Copyright &copy; 天津大学软件工程2020春季</span></p>
+                <p>项目地址：<a class="link" href="https://github.com/lilyht/MovieBookingSystem" style="color: write;">https://github.com/lilyht/MovieBookingSystem</a></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="static/js/core.min.js"></script>
+    <script src="static/js/script.js"></script>
+  </body>
+</html>
