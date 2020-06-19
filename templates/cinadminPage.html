@@ -144,6 +144,19 @@
                       </div>
                     </article>
                   </div>
+                  <div class="col-sm-12 col-lg-6 wow fadeInLeft" data-wow-delay=".1s">
+                    <article class="box-icon-creative">
+                      <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
+                        <div class="unit-left">
+                          <div class="box-icon-creative-icon fl-bigmug-line-list63"></div>
+                        </div>
+                        <div class="unit-body">
+                          <h5 class="box-icon-creative-title"><a id="dlink" href="#">统计分析</a></h5>
+                          <p class="box-icon-creative-text">统计受欢迎的电影片</p>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
                 </div>
               </div>
             </div>
@@ -178,6 +191,11 @@
         cObj.href = "delivery?cinname=" + cinadminname;
         console.log("c链接已更改");
         console.log(cObj.href);
+
+        var dObj = document.getElementById("dlink");
+        dObj.href = "analysis";
+        console.log("d链接已更改");
+        console.log(dObj.href);
         
       </script>
       

@@ -105,7 +105,9 @@
                 <div class="inset-xl-right-100">
                     <div class="row row-50 row-md-60 row-lg-80">
                         {% for item in orderlist %}
+                        <form action="{{ url_for('delivery') }}" method="POST" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" enctype="multipart/form-data">
                         <div class="col-12">
+                          <input name="orderID" value="{{item[0]}}" style="display: none;" />
                             <div class="box-comment" style="padding-bottom: 30px; border-bottom: 1px solid #e1e1e1;">
                                 <div class="unit flex-column flex-sm-row unit-spacing-md">
                                     <div class="unit-body">
@@ -116,24 +118,29 @@
                                                 </div>
                                             </div>
                                             <div class="box-comment-time">
-                                                <time datetime="2020-08-30">{{item[9]}}</time>
+                                                <time datetime="2020-10-21">{{item[9]}}</time>
                                             </div>
                                         </div>
                                         <p class="box-comment-text"> 订单编号：{{item[0]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  地址：{{item[6]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  联系电话：{{item[5]}}</p>
                                     </div>
                                 </div>
+                                <select name="couriername" class="form-input">
+                                  {% for item1 in deliverylist %}
+                                  <option class="rd-dropdown-item" value="{{item1[0]}}">{{item1[0]}}</option>
+                                  {% endfor %}
+                                </select>
+                                <input class="button button-sm button-primary button-zakaria" type="submit" name="action" value="发送送票通知" >
+
                             </div>
+
                         </div>
+                        </form>
                         {% endfor %}
                     </div>
                 </div>
                 </div>
               </div>
               
-              <form action="{{ url_for('updatecininfo') }}" method="POST" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" enctype="multipart/form-data">
-                <!-- TODO: 这部分没写全 -->
-                <input class="button button-lg button-primary button-zakaria" type="submit" name="action" value="发送送票通知" >
-              </form>
             {% endif %}
             </div>
           </div>

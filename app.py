@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 import dealwithdb as deal
 import role
+import statistics
 from pypinyin import lazy_pinyin
 import datetime
 import time
@@ -27,7 +28,9 @@ app = Flask(__name__)
 @app.route('/index', methods=['GET', 'POST'])
 def indexpage():
     if request.method == 'GET':
-        return render_template('indexPage.html')
+        toppopular = statistics.popular()
+        print(toppopular)
+        return render_template('indexPage.html', toppopular=toppopular)
   
 def allowed_file(filename):
     return '.' in filename and \
@@ -185,7 +188,8 @@ def MovieDetail():
         cost = buynum * price
         print(cost)
         orderID = str(ordernum[0]+1)
-        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(\
+            orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
         print(sql)
         cursor.execute(sql)
         db.commit()
@@ -251,7 +255,8 @@ def MovieDetail2():
         cost = buynum * price
         print(cost)
         orderID = str(ordernum[0]+1)
-        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(\
+            orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
         print(sql)
         cursor.execute(sql)
         db.commit()
@@ -311,7 +316,8 @@ def createCinema():
             cnum = cursor.fetchone()  # 总影院数
             cinemaID = cnum[0] + 1
             
-            sql = "INSERT INTO Cinema VALUES ({}, '{}', '{}', '{}', '{}', {}, {})".format(cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
+            sql = "INSERT INTO Cinema VALUES ({}, '{}', '{}', '{}', '{}', {}, {})".format(\
+                cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
             cursor.execute(sql)
             db.commit()
             return render_template("createCinema.html", messages="done")
@@ -326,7 +332,8 @@ def assign():
         db, cursor = deal.connect2db()
 
         # 查询待分配电影院
-        sql = "select C.cinemaID, C.cname from cinema C WHERE C.cinemaID not in (select distinct CA.cinemaID from CinAdmin CA WHERE CA.cinemaID is not NULL);"
+        sql = ('select C.cinemaID, C.cname from cinema C WHERE C.cinemaID not in '
+            '(select distinct CA.cinemaID from CinAdmin CA WHERE CA.cinemaID is not NULL);')
         print(sql)
         cursor.execute(sql)
         db.commit()
@@ -470,13 +477,48 @@ def delivery():
         db.commit()
         res = cursor.fetchall()
         reslen = len(res)
-        print(reslen)
         if reslen == 0:
             msg = "empty"
         else:
             msg = "have"
-        return render_template('delivery.html', cinemaID=cinemaID[0], orderlist=res, messages=msg)
+        
+        sql3 = "SELECT name FROM Courier"
+        cursor.execute(sql3)
+        db.commit()
+        deliverylist = cursor.fetchall()  
+        return render_template('delivery.html', cinemaID=cinemaID[0], orderlist=res, deliverylist=deliverylist, messages=msg)
+    elif request.method == 'POST':
+        print('delivery - POST')
+        orderID = request.form.get('orderID')
+        couriername = request.form.get('couriername')
+        print("订单{}--送票员：{}".format(orderID, couriername))
 
+        db, cursor = deal.connect2db()
+        sql1 = "UPDATE MOrder SET isFinished = 1 WHERE orderID = '{}'".format(orderID)
+        cursor.execute(sql1)
+        db.commit()
+
+        sql2 = "SELECT CinAdmin.adminname FROM CinAdmin, MOrder WHERE MOrder.orderID = '{}' AND CinAdmin.cinemaID = MOrder.cinemaID".format(orderID)
+        cursor.execute(sql2)
+        db.commit()
+        res = cursor.fetchone()
+        cinadminname = res[0]
+        print(cinadminname)
+        return render_template("cinadminPage.html", messages="done", cinadminname=cinadminname)
+
+
+# 系统统计分析模块
+@app.route('/analysis', methods=['GET', 'POST'])
+def analysis():
+    if request.method == 'GET':
+        print('analysis - GET')
+        toppopular = statistics.popular()  # 调用模块
+        topcinema = statistics.popularcinema() #调用模块
+        cinemanum = statistics.cinemaNum()
+        movienum = statistics.movieNum()
+        ordernum = statistics.orderNum()
+
+        return render_template('analysis.html',cinemanum=cinemanum, movienum=movienum, ordernum=ordernum, toppopular=toppopular, topcinema=topcinema)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port='9292')
