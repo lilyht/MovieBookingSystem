@@ -4,6 +4,8 @@ from werkzeug.utils import secure_filename
 import dealwithdb as deal
 import role
 import statistics
+import captcha
+import Movie
 from pypinyin import lazy_pinyin
 import datetime
 import time
@@ -18,9 +20,10 @@ importlib.reload(sys)
 
 UPLOAD_FOLDER = '/static/images'
 ALLOWED_EXTENSIONS = set(['jpg', 'png'])
-
+global chara
 
 app = Flask(__name__)
+app.jinja_env.auto_reload = True
 # app.secret_key = 'some_secret'
 
 
@@ -141,6 +144,7 @@ def CinemaDetail():
 
 @app.route('/MovieDetail', methods=['GET', 'POST'])
 def MovieDetail():
+    global chara
     msg = ''
     if request.method == 'GET':
         print('MovieDetail - GET')
@@ -148,18 +152,32 @@ def MovieDetail():
         movie = request.args.get('Movie')
         print(cinemaID)
         print(movie)
-        db, cursor = deal.connect2db()
-        sql = "SELECT * from Movie WHERE cinemaID = {} AND movie = '{}'".format(cinemaID, movie)
-        cursor.execute(sql)
-        db.commit()
-        movieinfo = cursor.fetchone()
+        m = Movie.MOVIE(movie, cinemaID)
+        msg, movieinfo = m.selectmovie(cinemaID, movie)
         print(movieinfo)
-        msg = 'done'
+        # 验证码
+        chara = captcha.generate()
+        print('get: {}'.format(chara))
+
         return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)   
+
     elif request.method == 'POST':
         print("用户提交订单")
         movie = request.form.get('Movie')
         cinemaID = request.form.get('CinemaID')
+        imgchar = request.form.get('captcha')
+        print(chara)
+        print(captcha)
+
+        m = Movie.MOVIE(movie, cinemaID)
+        msg, movieinfo = m.selectmovie(cinemaID, movie)
+
+        if chara != imgchar:
+            msg = 'captcha not correct'
+            print(msg)
+            return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
+        
+        print('验证码正确!')
         price = request.form.get('price')
         price = float(price)
         buynum = request.form.get('buynum')
@@ -193,9 +211,9 @@ def MovieDetail():
         print(sql)
         cursor.execute(sql)
         db.commit()
-        # TODO: 提示提交订单成功，等待派送，考完试再写这块就行
-
-        return render_template('index.html')
+        msg = 'order'
+        
+        return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
     
 @app.route('/MovieDetail2', methods=['GET', 'POST'])
 def MovieDetail2():
@@ -453,7 +471,7 @@ def uploadmovie():
         cinemaID = cinemaID[0]
 
         #创建影片对象
-        m = deal.MOVIE(movie, cinemaID, showtime, duration, screenshot, intro, trailer, fare)
+        m = Movie.MOVIE(movie, cinemaID, showtime, duration, screenshot, intro, trailer, fare)
         msg = m.insertmovie()
         return render_template('uploadmovie.html', messages=msg)
 

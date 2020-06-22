@@ -15,28 +15,6 @@ def connect2db():
         print("Error: unable to use database!")
     return db, cursor
 
-class MOVIE():
-    def __init__(self, movie, cinemaID, showtime, duration, screenshot, intro, trailer, fare):
-        self.movie = movie
-        self.cinemaID = cinemaID
-        self.showtime = showtime
-        self.duration = duration
-        self.screenshot = screenshot
-        self.intro = intro
-        self.trailer = trailer
-        self.fare = fare
-        print('初始化')
-
-    def insertmovie(self):
-        msg = ''
-        db, cursor = connect2db()
-        sql = "INSERT into Movie values ('{}', {}, '{}', {}, '{}', '{}', '{}', {} );".format(self.movie, self.cinemaID, self.showtime, self.duration, self.screenshot, self.intro, self.trailer, self.fare)
-        print(sql)
-        cursor.execute(sql)
-        db.commit()
-        print('Insert into Movie seccessfully!')
-        msg = 'done'
-        return msg
 
 class CINEMA():
     def __init__(self, cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity):

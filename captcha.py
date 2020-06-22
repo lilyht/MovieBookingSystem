@@ -1,0 +1,56 @@
+# coding:utf-8  
+import os  
+import sys
+import importlib
+importlib.reload(sys)
+import MySQLdb
+import importlib
+
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+import random
+
+# 随机字母:
+def rndChar():
+    return chr(random.randint(65, 90))
+
+# 随机颜色1:
+def rndColor():
+    return (random.randint(64, 255), random.randint(64, 255), random.randint(64, 255))
+
+# 随机颜色2:
+def rndColor2():
+    return (random.randint(32, 127), random.randint(32, 127), random.randint(32, 127))
+
+def generate():
+    # 240 x 60:
+    width = 60 * 4
+    height = 60
+    image = Image.new('RGB', (width, height), (255, 255, 255))
+    # 创建Font对象:
+    font = ImageFont.truetype('C:\Windows\Fonts\Arial.ttf', 36)
+    # 创建Draw对象:
+    draw = ImageDraw.Draw(image)
+    # 填充每个像素:
+    for x in range(width):
+        for y in range(height):
+            draw.point((x, y), fill=rndColor())
+    sad = ''
+    # write in 6/22 :<
+    # 输出文字:
+    for t in range(4):
+        char = rndChar()
+        draw.text((60 * t + 10, 10), char, font=font, fill=rndColor2())
+        sad = sad + char
+
+    # print(sad)
+
+    # 模糊:
+    image = image.filter(ImageFilter.BLUR)
+    image.save('./static/images/code.jpg', 'jpeg')
+    # image.show()
+
+    return sad
+
+if __name__ == "__main__":
+    pass

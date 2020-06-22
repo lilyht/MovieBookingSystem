@@ -142,6 +142,13 @@
                               <label class="form-label" for="contact-message-1">座位等级</label>
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                          <div class="form-wrap">
+                            <img src = "{{url_for('static', filename='images/code.jpg')}}" style="padding-left: 125px;">
+                            <input class="form-input" id="contact-message-1" type="text" name="captcha"/>
+                            <label class="form-label" for="contact-message-1">请填写验证码</label>
+                          </div>
+                      </div>
                       </div>
                     </div>
                     <div class="group-xs group-middle" style="margin-left: 15px;">
@@ -158,6 +165,12 @@
           </div>
         </div>
       </section>
+
+      {% if messages == "captcha not correct" %}
+        <script>alert("验证码填写错误！")</script>
+      {% elif messages == "order"  %}
+        <script>alert("订票成功，请等待送票！")</script> 
+      {% endif %}
     
         
       <!-- Page Footer-->
