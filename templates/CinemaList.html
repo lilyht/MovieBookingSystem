@@ -45,26 +45,7 @@
                   <ul class="rd-navbar-nav">
                     <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
                     <li class="rd-nav-item"><a class="rd-nav-link" href="CinemaList">影院列表</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
-                      <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us">About Us</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="what-we-offer">What We Offer</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="our-team">Our Team</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="pricing-list">Pricing List</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404-page">404 Page</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="coming-soon">Coming Soon</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="privacy-policy">Privacy Policy</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="search-results">Search Results</a>
-                        </li>
-                      </ul>
-                    </li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="MovieList">影片列表</a></li>
                     <li class="rd-nav-item"><a class="rd-nav-link" href="login">管理员入口</a></li>
                   </ul>
                 </div>
@@ -93,6 +74,19 @@
         </div>
       </section>
 
+      <section style="margin: 65px;">
+        <div class="aside-item col-sm-6 col-md-5 col-lg-12">
+        <form class="rd-search form-search" action="{{ url_for('search_results') }}" method="GET">
+          <div class="form-wrap">
+            <input class="form-input" id="search-form" type="text" name="s" autocomplete="off">
+            <input class="form-input"  type="text" value="1" name="searchtype" style="display: none;">
+            <label class="form-label" for="search-form">搜索</label>
+            <button class="button-search fl-bigmug-line-search74" type="submit"></button>
+          </div>
+        </form>
+        </div>
+      </section>
+
       <!-- 影院列表-->
       <section class="section section-sm section-last bg-default">
         <div class="container">
@@ -100,7 +94,7 @@
             {% if messages == 'done' %}
               {% for item in result %}
                 <div class="col-sm-6 col-md-5 col-lg-4">
-                  <article class="team-modern box-sm"><a class="team-modern-figure" href="#"><img src="{{ item[4] }}" alt="" width="270" height="227"/></a>
+                  <article class="team-modern box-sm"><a class="team-modern-figure" href="#"><img src="{{ item[4] }}" alt="" style="height: 180px;"/></a>
                     <h5 class="team-modern-name"><a href="#">{{ item[1] }}</a></h5>
                     <p class="team-modern-text">地址：{{ item[2] }}</p>
                     <p class="team-modern-text">电话：{{ item[3] }}</p>

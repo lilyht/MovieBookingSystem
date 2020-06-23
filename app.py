@@ -6,6 +6,7 @@ import role
 import statistics
 import captcha
 import Movie
+import MOrder
 from pypinyin import lazy_pinyin
 import datetime
 import time
@@ -142,6 +143,23 @@ def CinemaDetail():
             msg = "none"
             return render_template('CinemaDetail.html', cinmea=cinema, messages=msg)
 
+@app.route('/search_results', methods=['GET'])
+def search_results():
+    if request.method == 'GET':
+        print('search')
+        content = request.args.get('s')  # 获取搜索内容
+        searchtype = request.args.get('searchtype')
+        if searchtype == '1':
+            print("search cinema")
+            msg, resultlist = statistics.search(1, content)
+            print(resultlist)
+            return render_template('search-results.html', type=1, messages=msg, result=resultlist)
+        else:
+            print("search movie")
+            msg, resultlist = statistics.search(2, content)
+            return render_template('search-results.html', type=2, messages=msg, result=resultlist)
+
+
 @app.route('/MovieDetail', methods=['GET', 'POST'])
 def MovieDetail():
     global chara
@@ -178,8 +196,11 @@ def MovieDetail():
             return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
         
         print('验证码正确!')
-        price = request.form.get('price')
-        price = float(price)
+        afare = request.form.get('afare')
+        afare = float(afare)
+        bfare = request.form.get('bfare')
+        bfare = float(bfare)
+
         buynum = request.form.get('buynum')
         buynum = int(buynum)
         print(buynum)
@@ -191,96 +212,92 @@ def MovieDetail():
         # print(tansactiontime)
         print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
 
-        db, cursor = deal.connect2db()
-
-        sql = "SELECT count(*) from MOrder"
-        cursor.execute(sql)
-        db.commit()
-        ordernum = cursor.fetchone()  # 总订单数
+        ordernum = MOrder.count()  # 总订单数
+        orderID = str(ordernum[0]+1)
         # print(ordernum[0])
         seatnum = ''
         for i in range (buynum):
             r = random.randint(0,100)
             seatnum = seatrank + str(r) + ' ' + seatnum
         print(seatnum)
-        cost = buynum * price
+
+        if seatrank == 'A':
+            cost = buynum * afare
+        else:
+            cost = buynum * bfare
         print(cost)
-        orderID = str(ordernum[0]+1)
-        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(\
-            orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
-        print(sql)
-        cursor.execute(sql)
-        db.commit()
-        msg = 'order'
-        
+        myorder = MOrder.MORDER(orderID, movie, cinemaID, seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+        msg = myorder.insertmorder()        
         return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
     
 @app.route('/MovieDetail2', methods=['GET', 'POST'])
 def MovieDetail2():
+    global chara
     msg = ''
     if request.method == 'GET':
         print('MovieDetail2 - GET')
         movie = request.args.get('movie')
         print(movie)
-        db, cursor = deal.connect2db()
-        sql = "SELECT * from Movie WHERE movie = '{}'".format(movie)
-        print(sql)
-        cursor.execute(sql)
-        db.commit()
-        movieinfo = cursor.fetchone()
-        print(movieinfo)
-        msg = 'done'
 
+        m = Movie.MOVIE(movie, 0)
+        msg, movieinfo = m.selectbymovie(movie)
+        print(movieinfo)
         # 查找含有该影片的影院
-        sql = "SELECT DISTINCT M.cinemaID, C.cname FROM MOVIE M, CINEMA C WHERE M.movie = '{}' AND M.cinemaID = C.cinemaID;".format(movie)
-        print(sql)
-        cursor.execute(sql)
-        db.commit()
-        cinemaIDlist = cursor.fetchall()
+        msg, cinemaIDlist = m.selectcinema(movie)
+        # 验证码
+        chara = captcha.generate()
+        print('get: {}'.format(chara))
         return render_template('MovieDetail2.html', movieinfo=movieinfo, messages=msg, cinemaIDlist=cinemaIDlist)   
     elif request.method == 'POST':
         print("用户提交订单2")
+        imgchar = request.form.get('captcha')
         movie = request.form.get('Movie')
         cinemaID = request.form.get('cinemaname')
+        print(chara)
+        print(captcha)
+        m = Movie.MOVIE(movie, 0)
+        msg, movieinfo = m.selectbymovie(movie)
+        if chara != imgchar:   
+            msg = 'captcha not correct'
+            print(msg)
+            return render_template('MovieDetail2.html', movieinfo=movieinfo, messages=msg)
+        
+        print('验证码正确!')
+        
         print(cinemaID)
         print(type(cinemaID))
-
-        db, cursor = deal.connect2db()
         
-        price = request.form.get('price')
-        price = float(price)
+        afare = request.form.get('afare')
+        afare = float(afare)
+        bfare = request.form.get('bfare')
+        bfare = float(bfare)
         buynum = request.form.get('buynum')
         buynum = int(buynum)
-        print(buynum)
+        # print(buynum)
         name = request.form.get('name')
         addr = request.form.get('addr')
         phone = request.form.get('phone')
         seatrank = request.form.get('seatrank')
         tansactiontime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # print(tansactiontime)
         print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
 
-        sql = "SELECT count(*) from MOrder"
-        cursor.execute(sql)
-        db.commit()
-        ordernum = cursor.fetchone()  # 总订单数
+        ordernum = MOrder.count()  # 总订单数
+        orderID = str(ordernum[0]+1)
         # print(ordernum[0])
         seatnum = ''
         for i in range (buynum):
             r = random.randint(0,100)
             seatnum = seatrank + str(r) + ' ' + seatnum
         print(seatnum)
-        cost = buynum * price
-        print(cost)
-        orderID = str(ordernum[0]+1)
-        sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{} ');".format(\
-            orderID, movie, int(cinemaID), seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
-        print(sql)
-        cursor.execute(sql)
-        db.commit()
-        # TODO: 提示提交订单成功，等待派送，考完试再写这块
 
-        return render_template('index.html')
+        if seatrank == 'A':
+            cost = buynum * afare
+        else:
+            cost = buynum * bfare
+        print(cost)
+        myorder = MOrder.MORDER(orderID, movie, cinemaID, seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+        msg = myorder.insertmorder()
+        return render_template('MovieDetail2.html', movieinfo=movieinfo, messages=msg)
 
 # 系统管理员页面
 @app.route('/sysadminPage', methods=['GET', 'POST'])
@@ -452,7 +469,8 @@ def uploadmovie():
         movie = request.form.get('movie')
         duration = request.form.get('duration')
         trailer = request.form.get('trailer')
-        fare = request.form.get('fare')
+        afare = request.form.get('afare')
+        bfare = request.form.get('bfare')
         request.form.get('trailer')
         showday =  request.form.get('showday')
         showtime = request.form.get('showtime')
@@ -471,7 +489,7 @@ def uploadmovie():
         cinemaID = cinemaID[0]
 
         #创建影片对象
-        m = Movie.MOVIE(movie, cinemaID, showtime, duration, screenshot, intro, trailer, fare)
+        m = Movie.MOVIE(movie, cinemaID, showtime, duration, screenshot, intro, trailer, afare, bfare)
         msg = m.insertmovie()
         return render_template('uploadmovie.html', messages=msg)
 

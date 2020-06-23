@@ -77,10 +77,7 @@
             <div class="col-lg-6">
               <div class="single-product">
                 <h3 class="text-transform-none font-weight-medium">{{ movieinfo[0] }}</h3>
-                <div class="group-md group-middle">
-                  <div class="single-product-price">￥{{ movieinfo[7] }}</div>
-                  <!-- <div class="single-product-rating"><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star-half"></span></div> -->
-                </div>
+                
                 <hr>
                 <!-- 影片简介 -->
                 <p>{{ movieinfo[5] }}</p>
@@ -88,7 +85,8 @@
                 <ul class="list list-description">
                   <li><span>时长：</span><span>{{ movieinfo[3] }} 分钟</span></li>
                   <li><span>上映时间：</span><span>{{ movieinfo[2] }}</span></li>
-                  <li><span>票价：</span><span>￥{{ movieinfo[7] }}</span></li>
+                  <li><span>A等级座位票价：</span><span>￥{{ movieinfo[7] }}</span></li>
+                  <li><span>B等级座位票价：</span><span>￥{{ movieinfo[8] }}</span></li>
                   <li><span>预告片：</span><span><a href="{{ movieinfo[6] }}">观看预告片</a></span></li>
                 </ul>
                 <hr class="hr-gray-100">
@@ -110,7 +108,8 @@
                 <form action="{{ url_for('MovieDetail2') }}" method="POST">
                   <input class="form-input" type="text" name="Movie" value="{{ movieinfo[0] }}" style="display: none;"/>
                   <!-- <input class="form-input" type="text" name="CinemaID" value="{{ movieinfo[1] }}" style="display: none;"/> -->
-                  <input class="form-input" type="text" name="price" value="{{ movieinfo[7] }}" style="display: none;"/>
+                  <input class="form-input" type="text" name="afare" value="{{ movieinfo[7] }}" style="display: none;"/>
+                  <input class="form-input" type="text" name="bfare" value="{{ movieinfo[8] }}" style="display: none;"/>
                   <div class="row row-20 row-md-30">
                     <div class="col-lg-8">
                       <div class="row row-20 row-md-30">                        
@@ -149,10 +148,17 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-wrap">
-                              <input class="form-input" id="contact-message-1" type="text" name="seatrank"/>
-                              <label class="form-label" for="contact-message-1">座位等级</label>
-                            </div>
+                          <div class="form-wrap">
+                            <input class="form-input" id="contact-message-1" type="text" name="seatrank" data-constraints="@Required"/>
+                            <label class="form-label" for="contact-message-1">座位等级（请填写A或B）</label>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-wrap">
+                            <img src = "{{url_for('static', filename='images/code.jpg')}}" style="padding-left: 125px;">
+                            <input class="form-input" id="contact-message-2" type="text" name="captcha" data-constraints="@Required"/>
+                            <label class="form-label" for="contact-message-2">请填写验证码</label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -170,7 +176,11 @@
           </div>
         </div>
       </section>
-    
+      {% if messages == "captcha not correct" %}
+        <script>alert("验证码填写错误！")</script>
+      {% elif messages == "order"  %}
+        <script>alert("订票成功，请等待送票！")</script> 
+      {% endif %}
         
       <!-- Page Footer-->
       <footer class="section footer-modern footer-modern-2">

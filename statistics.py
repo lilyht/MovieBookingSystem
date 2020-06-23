@@ -36,7 +36,7 @@ def popular():
     db, cursor = deal.connect2db()
     # sql1 = "SELECT O.movie, COUNT(orderID) as sales FROM MOrder O Group BY O.movie ORDER BY sales DESC;"
     # 返回前三条结果
-    sql1 = ('SELECT O.movie as topsales, COUNT(distinct(orderID)) as sales, M.showtime, M.screenshot, M.intro, M.trailer, M.fare '
+    sql1 = ('SELECT O.movie as topsales, COUNT(distinct(orderID)) as sales, M.showtime, M.screenshot, M.intro, M.trailer, M.bfare '
             'FROM MOrder O, Movie M WHERE M.movie = O.movie Group BY O.movie ORDER BY sales DESC limit 3;')
 
     cursor.execute(sql1)
@@ -60,6 +60,33 @@ def popularcinema():
 def analysis():
     #TODO: 分析模块的函数
     return True
+
+def search(type, content):
+    msg = ''
+    db, cursor = deal.connect2db()
+    if type == 1:
+        sql = "select * from Cinema where cname like '%{}%';".format(content)
+        cursor.execute(sql)
+        db.commit()
+        cinemaresultlist = cursor.fetchall()
+        if len(cinemaresultlist) != 0:
+            msg = 'done'
+        else:
+            msg = 'none'
+        return msg, cinemaresultlist
+    elif type == 2:
+        sql = "select * from Movie where movie like '%{}%';".format(content)
+        cursor.execute(sql)
+        db.commit()
+        movieresultlist = cursor.fetchall()
+        if len(movieresultlist) != 0:
+            msg = 'done'
+        else:
+            msg = 'none'
+        return msg, movieresultlist
+    else:
+        msg = 'error'
+        return msg, ''
 
 if __name__ == "__main__":
     pass
