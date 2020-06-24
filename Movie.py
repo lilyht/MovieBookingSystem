@@ -7,10 +7,10 @@ importlib.reload(sys)
 import MySQLdb
 import importlib
 
-class MOVIE():
+class Movie():
     def __init__(self, movie, cinemaID, showtime='', duration=0, screenshot='', intro='', trailer='', afare=0, bfare=0):
         self.movie = movie
-        self.cinemaID = cinemaID
+        self.cinemaID = int(cinemaID)
         self.showtime = showtime
         self.duration = duration
         self.screenshot = screenshot
@@ -31,37 +31,47 @@ class MOVIE():
         msg = 'done'
         return msg
     
-    def selectmovie(self, cinemaID, movie):
+    def selectmovie(self):
         msg = ''
         db, cursor = deal.connect2db()
-        sql = "SELECT * from Movie WHERE cinemaID = {} AND movie = '{}'".format(cinemaID, movie)
+        sql = "SELECT * from Movie WHERE cinemaID = {} AND movie = '{}'".format(self.cinemaID, self.movie)
         cursor.execute(sql)
         db.commit()
         movieinfo = cursor.fetchone()
         msg = 'done'
         return msg, movieinfo
     
-    def selectbymovie(self, movie):
+    def selectbymovie(self):
         msg = ''
         db, cursor = deal.connect2db()
-        sql = "SELECT * from Movie WHERE movie = '{}'".format(movie)
+        sql = "SELECT * from Movie WHERE movie = '{}'".format(self.movie)
         cursor.execute(sql)
         db.commit()
         movieinfo = cursor.fetchone()
         msg = 'done'
         return msg, movieinfo
 
-    def selectcinema(self, movie):
+
+    def selectcinema(self):
         # 查找含有该影片的影院
         msg = ''
         db, cursor = deal.connect2db()
-        sql = "SELECT DISTINCT M.cinemaID, C.cname FROM MOVIE M, CINEMA C WHERE M.movie = '{}' AND M.cinemaID = C.cinemaID;".format(movie)
+        sql = "SELECT DISTINCT M.cinemaID, C.cname FROM MOVIE M, CINEMA C WHERE M.movie = '{}' AND M.cinemaID = C.cinemaID;".format(self.movie)
         print(sql)
         cursor.execute(sql)
         db.commit()
         cinemaIDlist = cursor.fetchall()
         return msg, cinemaIDlist
 
+def selectbycinema(cinemaID):
+    msg = ''
+    db, cursor = deal.connect2db()
+    sql = "SELECT * from Movie WHERE cinemaID = {}".format(cinemaID)
+    cursor.execute(sql)
+    db.commit()
+    res = cursor.fetchall()
+    reslen = len(res)
+    return res, reslen
 
 if __name__ == "__main__":
     pass

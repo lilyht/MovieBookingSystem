@@ -7,7 +7,7 @@ importlib.reload(sys)
 import MySQLdb
 import importlib
 
-class MORDER():
+class Morder():
     def __init__(self, orderID, movie='', cinemaID='', seatrank='', seatnum='', phone='', addr='', isFinished=0, cost=0, tansactiontime=''):
         self.orderID = orderID
         self.movie = movie
@@ -43,3 +43,15 @@ def count():
     ordernum = cursor.fetchone()  # 总订单数
     return ordernum
     
+def getorder(cinemaID):
+    db, cursor = deal.connect2db()
+    sql = "SELECT * FROM MOrder WHERE isFinished = 0 AND cinemaID = {}".format(cinemaID)
+    cursor.execute(sql)
+    db.commit()
+    res = cursor.fetchall()
+    reslen = len(res)
+    if reslen == 0:
+        msg = "empty"
+    else:
+        msg = "have"
+    return msg, res

@@ -2,11 +2,13 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 import dealwithdb as deal
-import role
 import statistics
 import captcha
-import Movie
-import MOrder
+import movie as mv
+import cinema as cin
+import morder
+import admin
+import courier
 from pypinyin import lazy_pinyin
 import datetime
 import time
@@ -53,11 +55,13 @@ def login():
         print(username)
         # 连接数据库，默认数据库用户名root，密码空
         if adminRole == 'SYSADMIN':  # 系统管理员
-            msg = role.SysAdminLogin(username, password)
+            sysadmin = admin.SysAdmin(username, password)
+            msg = admin.SysAdmin.SysAdminLogin(sysadmin)
             return render_template('login.html', messages=msg, username=username, userRole=adminRole)
 
         elif adminRole == 'CINADMIN':  # 电影院管理员
-            msg = role.CinAdminLogin(username, password)
+            cinadmin = admin.CinAdmin(username, password)
+            msg = admin.CinAdmin.CinAdminLogin(cinadmin)
             return render_template('login.html', messages=msg, username=username, userRole=adminRole)
 
 # 影片列表
@@ -114,27 +118,18 @@ def CinemaList():
 @app.route('/CinemaDetail', methods=['GET', 'POST'])
 def CinemaDetail():
     if request.method == 'GET':
-        print('GET')
+        print('CinemaDetail-GET')
         return render_template('CinemaDetail.html')
     elif request.method == 'POST':
         # 从影院点击进来的是POST方法
-        print('POST')
+        print('CinemaDetail-POST')
         cinemaID = request.form.get('cinemaID')
-        print(cinemaID)
+        c = cin.Cinema(cinemaID)
+        cinema = c.getinfo()
+        res, reslen = mv.selectbycinema(cinemaID)
+        print(res)
 
-        db, cursor = deal.connect2db()
-        sql1 = "SELECT * from Cinema WHERE cinemaID = {}".format(cinemaID)
-        cursor.execute(sql1)
-        db.commit()
-        cinema = cursor.fetchone()
-        print(cinema)
-
-        sql = "SELECT * from Movie WHERE cinemaID = {}".format(cinemaID)
-        cursor.execute(sql)
-        db.commit()
-        res = cursor.fetchall()
-        # print(res)
-        if len(res) != 0:
+        if reslen != 0:
             msg = "done"
             print(msg)
             return render_template('CinemaDetail.html', cinmea=cinema, result=res, messages=msg)
@@ -167,11 +162,10 @@ def MovieDetail():
     if request.method == 'GET':
         print('MovieDetail - GET')
         cinemaID = request.args.get('CinemaID')
-        movie = request.args.get('Movie')
+        moviename = request.args.get('Movie')
         print(cinemaID)
-        print(movie)
-        m = Movie.MOVIE(movie, cinemaID)
-        msg, movieinfo = m.selectmovie(cinemaID, movie)
+        m = mv.Movie(moviename, cinemaID)
+        msg, movieinfo = m.selectmovie()
         print(movieinfo)
         # 验证码
         chara = captcha.generate()
@@ -187,46 +181,45 @@ def MovieDetail():
         print(chara)
         print(captcha)
 
-        m = Movie.MOVIE(movie, cinemaID)
-        msg, movieinfo = m.selectmovie(cinemaID, movie)
+        m = mv.Movie(movie, cinemaID)
+        msg, movieinfo = m.selectmovie()
 
         if chara != imgchar:
             msg = 'captcha not correct'
             print(msg)
             return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
-        
         print('验证码正确!')
-        afare = request.form.get('afare')
-        afare = float(afare)
-        bfare = request.form.get('bfare')
-        bfare = float(bfare)
 
+        afare = request.form.get('afare')
+        bfare = request.form.get('bfare')       
         buynum = request.form.get('buynum')
-        buynum = int(buynum)
-        print(buynum)
         name = request.form.get('name')
         addr = request.form.get('addr')
         phone = request.form.get('phone')
         seatrank = request.form.get('seatrank')
         tansactiontime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        afare = float(afare)
+        bfare = float(bfare)
+        buynum = int(buynum)
+        print(buynum)
         # print(tansactiontime)
         print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
+        
 
-        ordernum = MOrder.count()  # 总订单数
+        ordernum = morder.count()  # 总订单数
         orderID = str(ordernum[0]+1)
         # print(ordernum[0])
         seatnum = ''
         for i in range (buynum):
             r = random.randint(0,100)
             seatnum = seatrank + str(r) + ' ' + seatnum
-        print(seatnum)
-
         if seatrank == 'A':
             cost = buynum * afare
         else:
             cost = buynum * bfare
-        print(cost)
-        myorder = MOrder.MORDER(orderID, movie, cinemaID, seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+
+        myorder = morder.Morder(orderID, movie, cinemaID, seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
         msg = myorder.insertmorder()        
         return render_template('MovieDetail.html', movieinfo=movieinfo, messages=msg)
     
@@ -236,14 +229,12 @@ def MovieDetail2():
     msg = ''
     if request.method == 'GET':
         print('MovieDetail2 - GET')
-        movie = request.args.get('movie')
-        print(movie)
-
-        m = Movie.MOVIE(movie, 0)
-        msg, movieinfo = m.selectbymovie(movie)
+        moviename = request.args.get('movie')
+        m = mv.Movie(moviename, 0)
+        msg, movieinfo = m.selectbymovie()
         print(movieinfo)
         # 查找含有该影片的影院
-        msg, cinemaIDlist = m.selectcinema(movie)
+        msg, cinemaIDlist = m.selectcinema()
         # 验证码
         chara = captcha.generate()
         print('get: {}'.format(chara))
@@ -255,8 +246,8 @@ def MovieDetail2():
         cinemaID = request.form.get('cinemaname')
         print(chara)
         print(captcha)
-        m = Movie.MOVIE(movie, 0)
-        msg, movieinfo = m.selectbymovie(movie)
+        m = mv.Movie(movie, 0)
+        msg, movieinfo = m.selectbymovie()
         if chara != imgchar:   
             msg = 'captcha not correct'
             print(msg)
@@ -268,20 +259,19 @@ def MovieDetail2():
         print(type(cinemaID))
         
         afare = request.form.get('afare')
-        afare = float(afare)
         bfare = request.form.get('bfare')
-        bfare = float(bfare)
         buynum = request.form.get('buynum')
-        buynum = int(buynum)
-        # print(buynum)
         name = request.form.get('name')
         addr = request.form.get('addr')
         phone = request.form.get('phone')
         seatrank = request.form.get('seatrank')
         tansactiontime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print("{}-{}-{}-{}".format(name, addr, phone, seatrank))
 
-        ordernum = MOrder.count()  # 总订单数
+        afare = float(afare)
+        bfare = float(bfare)
+        buynum = int(buynum)
+
+        ordernum = morder.count()  # 总订单数
         orderID = str(ordernum[0]+1)
         # print(ordernum[0])
         seatnum = ''
@@ -295,7 +285,7 @@ def MovieDetail2():
         else:
             cost = buynum * bfare
         print(cost)
-        myorder = MOrder.MORDER(orderID, movie, cinemaID, seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
+        myorder = morder.Morder(orderID, movie, cinemaID, seatrank, seatnum, phone, addr, 0, cost, tansactiontime)
         msg = myorder.insertmorder()
         return render_template('MovieDetail2.html', movieinfo=movieinfo, messages=msg)
 
@@ -306,7 +296,7 @@ def sysadminPage():
     if request.method == 'GET':
         print('sysadminPage - GET')
         # movie = request.args.get('movie')
-        return render_template('sysadminPage.html') 
+        return render_template('sysadminPage.html')
 
 # 影院管理员页面
 @app.route('/cinadminPage', methods=['GET', 'POST'])
@@ -331,7 +321,6 @@ def createCinema():
         cphone = request.form.get('cphone')
         acapacity = request.form.get('acapacity')
         bcapacity = request.form.get('bcapacity')
-        # print("{}-{}-{}-{}-{}".format(cname, caddr, cphone, acapacity, bcapacity))
         f = request.files['the_file']
 
         if f and allowed_file(f.filename):
@@ -340,21 +329,11 @@ def createCinema():
             # flash("load file successfully!")
             imagesrc = ""
             imagesrc = 'static/images/' + filename
-            print(imagesrc)
-
-            # 查库
-            db, cursor = deal.connect2db()
-
-            sql1 = "SELECT MAX(cinemaID) from Cinema"
-            cursor.execute(sql1)
-            db.commit()
-            cnum = cursor.fetchone()  # 总影院数
+            cnum = cin.cinemanum()  # 总影院数
             cinemaID = cnum[0] + 1
+            c = cin.Cinema(cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
+            c.insertcinema()
             
-            sql = "INSERT INTO Cinema VALUES ({}, '{}', '{}', '{}', '{}', {}, {})".format(\
-                cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
-            cursor.execute(sql)
-            db.commit()
             return render_template("createCinema.html", messages="done")
         else:
             return render_template("createCinema.html", messages="unsuit")
@@ -364,41 +343,15 @@ def createCinema():
 def assign():
     if request.method == 'GET':
         print('assign - GET')
-        db, cursor = deal.connect2db()
-
-        # 查询待分配电影院
-        sql = ('select C.cinemaID, C.cname from cinema C WHERE C.cinemaID not in '
-            '(select distinct CA.cinemaID from CinAdmin CA WHERE CA.cinemaID is not NULL);')
-        print(sql)
-        cursor.execute(sql)
-        db.commit()
-        res1 = cursor.fetchall()
-        res1len = len(res1)
-        print(res1len)
-
-        # 查询空闲电影院管理员
-        sql2 = "SELECT * from CinAdmin WHERE cinemaID is NULL"
-        print(sql2)
-        cursor.execute(sql2)
-        db.commit()
-        res2 = cursor.fetchall()
-        res2len = len(res2)
-        print(res2len)
+        res1, res1len = cin.waitforassign()
+        res2, res2len = admin.availablecin()
         return render_template('assign.html', res1=res1, res2=res2, res1len=res1len, res2len=res2len)
     elif request.method == 'POST':
         cinemaID = request.form.get('cinemaname')
         adminname = request.form.get('adminname')
-        print(cinemaID)
-        print(adminname)
 
-        db, cursor = deal.connect2db()
-
-        # 查询待分配电影院
-        sql = "UPDATE CinAdmin SET cinemaID = {} WHERE adminname = '{}'".format(cinemaID, adminname)
-        print(sql)
-        cursor.execute(sql)
-        db.commit()
-        msg = 'done'
+        c = admin.CinAdmin(adminname)
+        msg = c.assigncinadmin(cinemaID)
         return render_template('assign.html', messages=msg)
 
 
@@ -407,23 +360,11 @@ def assign():
 def updatecininfo():
     if request.method == 'GET':
         print('updatecininfo - GET')
-        msg = ''
-
-        db, cursor = deal.connect2db()
-
-        #TODO: 获取参数、更新影院信息
-        cinname = request.args.get('cinname')
-        print(cinname)
-        sql1 = "SELECT cinemaID from CinAdmin WHERE adminname = '{}'".format(cinname)
-        cursor.execute(sql1)
-        db.commit()
-        cinemaID = cursor.fetchone()  # 负责影院的ID
-
-        sql2 = "SELECT * from Cinema WHERE cinemaID = {}".format(cinemaID[0])
-        cursor.execute(sql2)
-        db.commit()
-        cininfo = cursor.fetchone()
-        return render_template('updatecininfo.html', messages=msg, res=cininfo)
+        cinname = request.args.get('cinname')        
+        msg, cinemaID = admin.getcinemaID(cinname)  # 负责影院的ID
+        c = cin.Cinema(cinemaID[0])
+        cininfo = c.getinfo()
+        return render_template('updatecininfo.html', res=cininfo)
     elif request.method == 'POST':
         print('updatecininfo - POST')
         # cinadminname = request.form.get('cinadminname')
@@ -432,13 +373,11 @@ def updatecininfo():
         cphone = request.form.get('cphone')
         acapacity = request.form.get('acapacity')
         bcapacity = request.form.get('bcapacity')
-        print("{}-{}-{}-{}-{}".format(cname, caddr, cphone, acapacity, bcapacity))
+
+        # 更新
+        cin.updatecinema(cname, caddr, cphone, acapacity, bcapacity)
         
         db, cursor = deal.connect2db()
-        sql = "UPDATE Cinema SET caddr='{}', cphone='{}', acapacity={}, bcapacity={} WHERE cname = '{}'".format(caddr, cphone, acapacity, bcapacity, cname)
-        cursor.execute(sql)
-        db.commit()
-
         sql1 = "SELECT CinAdmin.adminname FROM CinAdmin, Cinema WHERE cname='{}' AND CinAdmin.cinemaID = Cinema.cinemaID".format(cname)
         cursor.execute(sql1)
         db.commit()
@@ -455,14 +394,7 @@ def uploadmovie():
     if request.method == 'GET':
         print('uploadmovie - GET')
         cinname = request.args.get('cinname')
-        print(cinname)
-        db, cursor = deal.connect2db()
-        sql1 = "SELECT cinemaID from CinAdmin WHERE adminname = '{}'".format(cinname)
-        cursor.execute(sql1)
-        db.commit()
-        cinemaID = cursor.fetchone()  # 负责影院的ID
-        print(cinemaID[0])
-
+        msg, cinemaID = admin.getcinemaID(cinname)
         return render_template('uploadmovie.html', cinemaID=cinemaID[0])
 
     elif request.method == 'POST':
@@ -489,7 +421,7 @@ def uploadmovie():
         cinemaID = cinemaID[0]
 
         #创建影片对象
-        m = Movie.MOVIE(movie, cinemaID, showtime, duration, screenshot, intro, trailer, afare, bfare)
+        m = mv.Movie(movie, cinemaID, showtime, duration, screenshot, intro, trailer, afare, bfare)
         msg = m.insertmovie()
         return render_template('uploadmovie.html', messages=msg)
 
@@ -501,27 +433,9 @@ def delivery():
         print('delivery - GET')
         cinname = request.args.get('cinname')
         print(cinname)
-        db, cursor = deal.connect2db()
-        sql1 = "SELECT cinemaID from CinAdmin WHERE adminname = '{}'".format(cinname)
-        cursor.execute(sql1)
-        db.commit()
-        cinemaID = cursor.fetchone()  # 负责影院的ID
-        print(cinemaID[0])
-
-        sql2 = "SELECT * FROM MOrder WHERE isFinished = 0 AND cinemaID = {}".format(cinemaID[0])
-        cursor.execute(sql2)
-        db.commit()
-        res = cursor.fetchall()
-        reslen = len(res)
-        if reslen == 0:
-            msg = "empty"
-        else:
-            msg = "have"
-        
-        sql3 = "SELECT name FROM Courier"
-        cursor.execute(sql3)
-        db.commit()
-        deliverylist = cursor.fetchall()  
+        msg, cinemaID = admin.getcinemaID(cinname)
+        msg, res = morder.getorder(cinemaID[0])
+        deliverylist = courier.getnamelist()
         return render_template('delivery.html', cinemaID=cinemaID[0], orderlist=res, deliverylist=deliverylist, messages=msg)
     elif request.method == 'POST':
         print('delivery - POST')
