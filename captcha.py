@@ -35,22 +35,20 @@ def generate():
     for x in range(width):
         for y in range(height):
             draw.point((x, y), fill=rndColor())
-    sad = ''
+    key = ''
     # write in 6/22 :<
     # 输出文字:
     for t in range(4):
         char = rndChar()
         draw.text((60 * t + 10, 10), char, font=font, fill=rndColor2())
-        sad = sad + char
-
-    # print(sad)
+        key = key + char
 
     # 模糊:
     image = image.filter(ImageFilter.BLUR)
     image.save('./static/images/code.jpg', 'jpeg')
-    # image.show()
+    # image.show()  
 
-    return sad
+    return key
 
 if __name__ == "__main__":
     pass

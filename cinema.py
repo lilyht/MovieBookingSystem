@@ -24,6 +24,7 @@ class Cinema():
                 self.cinemaID, self.cname, self.caddr, self.cphone, self.imagesrc, self.acapacity, self.bcapacity)
         cursor.execute(sql)
         db.commit()
+        msg = 'done'
         return msg
     
     def getinfo(self):
@@ -35,7 +36,7 @@ class Cinema():
         return cininfo
     
 
-def cinemanum():
+def getcinemanum():
     db, cursor = deal.connect2db()
     sql1 = "SELECT MAX(cinemaID) from Cinema"
     cursor.execute(sql1)
@@ -51,9 +52,9 @@ def waitforassign():
     print(sql)
     cursor.execute(sql)
     db.commit()
-    res1 = cursor.fetchall()
-    res1len = len(res1)
-    return res1, res1len
+    res = cursor.fetchall()
+    reslen = len(res)
+    return res, reslen
 
 def updatecinema(cname, caddr, cphone, acapacity, bcapacity):
     db, cursor = deal.connect2db()

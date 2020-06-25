@@ -6,9 +6,10 @@ import statistics
 import captcha
 import movie as mv
 import cinema as cin
+import courier
 import morder
 import admin
-import courier
+import courier as co
 from pypinyin import lazy_pinyin
 import datetime
 import time
@@ -34,7 +35,7 @@ app.jinja_env.auto_reload = True
 @app.route('/index', methods=['GET', 'POST'])
 def indexpage():
     if request.method == 'GET':
-        toppopular = statistics.popular()
+        toppopular = statistics.popularmovie()
         print(toppopular)
         return render_template('indexPage.html', toppopular=toppopular)
   
@@ -62,6 +63,10 @@ def login():
         elif adminRole == 'CINADMIN':  # 电影院管理员
             cinadmin = admin.CinAdmin(username, password)
             msg = admin.CinAdmin.CinAdminLogin(cinadmin)
+            return render_template('login.html', messages=msg, username=username, userRole=adminRole)
+        elif adminRole == 'COURIER':  # 送票员
+            cour = co.Courier(username, password)
+            msg = co.Courier.CourierLogin(cour)
             return render_template('login.html', messages=msg, username=username, userRole=adminRole)
 
 # 影片列表
@@ -289,19 +294,40 @@ def MovieDetail2():
         msg = myorder.insertmorder()
         return render_template('MovieDetail2.html', movieinfo=movieinfo, messages=msg)
 
+# 送票员页面
+@app.route('/courierPage', methods=['GET', 'POST'])
+def courierPage():
+    msg = ''
+    if request.method == 'GET':
+        print('courierPage - GET')
+        couriername =  request.args.get('couriername')
+        msg, orderlist = co.getorderlist(couriername)
+        # print(msg)
+        return render_template('courierPage.html', messages=msg, orderlist=orderlist)
+    else:
+        if request.form["action"] == '送达确认':
+            morderID = request.form.get('orderID')
+            morder.finished(morderID)
+            return render_template('courierPage.html', messages='OK')
+        elif request.form["action"] == '取消订单':
+            morderID = request.form.get('orderID')
+            morder.delete(morderID)
+            return render_template('courierPage.html', messages='DELETE')
+    
+    
+
 # 系统管理员页面
 @app.route('/sysadminPage', methods=['GET', 'POST'])
 def sysadminPage():
-    msg = ''
     if request.method == 'GET':
         print('sysadminPage - GET')
         # movie = request.args.get('movie')
         return render_template('sysadminPage.html')
+    
 
 # 影院管理员页面
 @app.route('/cinadminPage', methods=['GET', 'POST'])
 def cinadminPage():
-    msg = ''
     if request.method == 'GET':
         print('cinadminPage - GET')
         # cname = request.args.get('cinname')
@@ -329,7 +355,7 @@ def createCinema():
             # flash("load file successfully!")
             imagesrc = ""
             imagesrc = 'static/images/' + filename
-            cnum = cin.cinemanum()  # 总影院数
+            cnum = cin.getcinemanum()  # 总影院数
             cinemaID = cnum[0] + 1
             c = cin.Cinema(cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
             c.insertcinema()
@@ -344,7 +370,7 @@ def assign():
     if request.method == 'GET':
         print('assign - GET')
         res1, res1len = cin.waitforassign()
-        res2, res2len = admin.availablecin()
+        res2, res2len = admin.getavailablecin()
         return render_template('assign.html', res1=res1, res2=res2, res1len=res1len, res2len=res2len)
     elif request.method == 'POST':
         cinemaID = request.form.get('cinemaname')
@@ -444,7 +470,7 @@ def delivery():
         print("订单{}--送票员：{}".format(orderID, couriername))
 
         db, cursor = deal.connect2db()
-        sql1 = "UPDATE MOrder SET isFinished = 1 WHERE orderID = '{}'".format(orderID)
+        sql1 = "UPDATE MOrder SET courier = '{}' WHERE orderID = '{}'".format(couriername, orderID)
         cursor.execute(sql1)
         db.commit()
 
@@ -462,7 +488,7 @@ def delivery():
 def analysis():
     if request.method == 'GET':
         print('analysis - GET')
-        toppopular = statistics.popular()  # 调用模块
+        toppopular = statistics.popularmovie()  # 调用模块
         topcinema = statistics.popularcinema() #调用模块
         cinemanum = statistics.cinemaNum()
         movienum = statistics.movieNum()

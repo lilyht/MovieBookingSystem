@@ -13,6 +13,7 @@ class Admin():
         self.adminname = adminname
         self.password = password
 
+# 子类
 class SysAdmin(Admin):
     def __init__(self, adminname, password):
         Admin.__init__(self, adminname, password)
@@ -34,6 +35,7 @@ class SysAdmin(Admin):
             msg = "fail1"
         return msg
 
+# 子类
 class CinAdmin(Admin):
     def __init__(self, adminname, password='', cinemaID=0):
         Admin.__init__(self, adminname, password)
@@ -69,7 +71,7 @@ class CinAdmin(Admin):
     
     
 
-def availablecin():
+def getavailablecin():
     # 查询空闲电影院管理员
     db, cursor = deal.connect2db()
     sql = "SELECT * from CinAdmin WHERE cinemaID is NULL"

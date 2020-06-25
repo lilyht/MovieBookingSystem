@@ -80,86 +80,66 @@
           </nav>
         </div>
       </header>
-      <!-- login in system -->
-      <section class="section section-xl bg-default text-md-left" style="padding-bottom: 20px;">
+      <section class="section section-sm section-first bg-default" style="padding-top: 20px;">
         <div class="container">
-          <div class="title-classic">
-            <h4 class="title-classic-title">欢迎影院管理员！</h4><br><br/>
-          </div>
-          <!-- <h6>创建影院</h6> -->
-        </div>
-      </section>
-      <!-- 更新影院的表单 -->
-    <section class="section section-sm section-first bg-default" style="padding-top: 20px;">
-      <div class="container">
-        <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
-          <div class="tab-content tab-content-1">
-            <div class="tab-pane fade show active" id="tabs-1-1">
-            {% if messages == "empty" %}
-            <h4 class="text-transform-none font-weight-medium">暂无订单等待派送</h4>
-            {% elif messages == "have" %}
-              <h4 class="text-transform-none font-weight-medium">以下订单等待您指定送票员派送</h4>
-
-              <div class="row row-50 row-md-60">
-                <div class="col-lg-8 col-xl-9">
-                <div class="inset-xl-right-100">
-                    <div class="row row-50 row-md-60 row-lg-80">
-                        {% for item in orderlist %}
-                        <form action="{{ url_for('delivery') }}" method="POST" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" enctype="multipart/form-data">
-                        <div class="col-12">
-                          <input name="orderID" value="{{item[0]}}" style="display: none;" />
-                            <div class="box-comment" style="padding-bottom: 30px; border-bottom: 1px solid #e1e1e1;">
-                                <div class="unit flex-column flex-sm-row unit-spacing-md">
-                                    <div class="unit-body">
-                                        <div class="group-sm group-justify">
-                                            <div>
-                                                <div class="group-xs group-middle">
-                                                <h5 class="box-comment-author"><a href="#">{{item[1]}}</a></h5><a class="box-comment-reply" href="#">￥{{item[8]}}</a>
-                                                </div>
-                                            </div>
-                                            <div class="box-comment-time">
-                                                <time datetime="2020-10-21">{{item[9]}}</time>
-                                            </div>
-                                        </div>
-                                        <p class="box-comment-text"> 订单编号：{{item[0]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  地址：{{item[6]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  联系电话：{{item[5]}}</p>
-                                    </div>
-                                </div>
-                                <select name="couriername" class="form-input">
-                                  {% for item1 in deliverylist %}
-                                  <option class="rd-dropdown-item" value="{{item1[0]}}">{{item1[0]}}</option>
-                                  {% endfor %}
-                                </select>
-                                <input class="button button-sm button-primary button-zakaria" onclick="chickFunction()" type="submit" name="action" value="发送送票通知" >
-                                <script>
-                                  function chickFunction() {
-                                    var txt;
-                                    if (confirm("已通知送票员派送!")) {
-                                    }
-                                  }
-                                </script>
-                            </div>
-
-                        </div>
-                        </form>
-                        {% endfor %}
-                    </div>
+          <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
+            <div class="tab-content tab-content-1">
+              <div class="tab-pane fade show active" id="tabs-1-1">
+              {% if messages == 'empty' %}
+              <h4 class="text-transform-none font-weight-medium">暂无订单等待派送</h4>
+              {% elif messages == "have" %}
+                <h4 class="text-transform-none font-weight-medium">以下订单等待您派送</h4>
+    
+                <div class="row row-50 row-md-60">
+                  <div class="col-lg-8 col-xl-9">
+                  <div class="inset-xl-right-100">
+                      <div class="row row-50 row-md-60 row-lg-80">
+                          {% for item in orderlist %}
+                          <form action="{{ url_for('courierPage') }}" method="POST" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" enctype="multipart/form-data">
+                          <div class="col-12">
+                            <input name="orderID" value="{{item[0]}}" style="display: none;" />
+                              <div class="box-comment" style="padding-bottom: 30px; border-bottom: 1px solid #e1e1e1;">
+                                  <div class="unit flex-column flex-sm-row unit-spacing-md">
+                                      <div class="unit-body">
+                                          <div class="group-sm group-justify">
+                                              <div>
+                                                  <div class="group-xs group-middle">
+                                                  <h5 class="box-comment-author"><a href="#">{{item[1]}}</a></h5><a class="box-comment-reply" href="#">￥{{item[8]}}</a>
+                                                  </div>
+                                              </div>
+                                              <div class="box-comment-time">
+                                                  <time datetime="2020-10-21">{{item[9]}}</time>
+                                              </div>
+                                          </div>
+                                          <p class="box-comment-text"> 订单编号：{{item[0]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  地址：{{item[6]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  联系电话：{{item[5]}}</p>
+                                      </div>
+                                  </div>
+                                  <input class="button button-sm button-primary button-zakaria" type="submit" name="action" value="送达确认" >
+                                  <input class="button button-sm button-primary button-zakaria" type="submit" name="action" value="取消订单" >
+                              </div>
+    
+                          </div>
+                          </form>
+                          {% endfor %}
+                      </div>
+                  </div>
+                  </div>
                 </div>
-                </div>
+                
+              {% endif %}
               </div>
-              
-            {% endif %}
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    {% if messages == "done" %}
-        <script>alert("指定送票员成功！")</script>
-        <script type='text/javascript'>window.location.href='cinadminPage'</script>
-    {% endif %}
+      </section>
+      {% if messages == "OK" %}
+          <script>alert("送票成功！")</script>
+      {% elif messages == 'DELETE' %}
+        <script>alert("订单已取消！")</script>
+      {% endif %}
         
       <!-- Page Footer-->
-      <footer class="section footer-modern footer-modern-2" style="margin-top: 255px;">
+      <footer class="section footer-modern footer-modern-2" style="margin-top: 412px;">
         <div class="footer-modern-panel text-center">
           <div class="container">
             <p class="rights"><span>Copyright &copy; 天津大学软件工程2020春季</span></p>

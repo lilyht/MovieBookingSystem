@@ -58,7 +58,7 @@
       <section class="section section-xl bg-default text-md-left">
         <div class="container">
           <div class="title-classic">
-            <h4 class="title-classic-title">管理员登录</h4>
+            <h4 class="title-classic-title">管理员 / 送票员登录</h4>
           </div>
           <!-- 登录表单 -->
           <form method="post" action="" method="POST">
@@ -84,6 +84,9 @@
                     <label class="checkbox-inline" style="margin-left: 15px;">
                         <input name="adminRole" value="CINADMIN" type="checkbox">电影院管理员
                     </label>
+                    <label class="checkbox-inline" style="margin-left: 15px;">
+                      <input name="adminRole" value="COURIER" type="checkbox">送票员
+                  </label>
                   </div>
                 </div>
               </div>
@@ -112,6 +115,15 @@
         </script>
     {% elif messages == "fail2" %}
         <script>alert("登录失败！您没有影院管理员权限或登录信息出错。")</script>
+    {% elif messages == "done3" %}
+        <script>alert("登录成功！欢迎配送员！")</script>
+        <script type='text/javascript'>
+          var couriername = document.getElementById("username").value;
+          console.log(couriername)
+          window.location.href='courierPage?couriername='+couriername;
+        </script>
+    {% elif messages == "fail3" %}
+        <script>alert("登录失败！您没有配送员权限或登录信息出错。")</script>
     {% endif %}
         
       <!-- Page Footer-->

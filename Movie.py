@@ -71,6 +71,7 @@ def selectbycinema(cinemaID):
     db.commit()
     res = cursor.fetchall()
     reslen = len(res)
+    msg = 'done'
     return res, reslen
 
 if __name__ == "__main__":
