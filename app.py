@@ -350,11 +350,12 @@ def createCinema():
         f = request.files['the_file']
 
         if f and allowed_file(f.filename):
-            filename = secure_filename(f.filename)
+            filename = secure_filename(''.join(lazy_pinyin(f.filename)))
             f.save('static/images/' + filename)
             # flash("load file successfully!")
             imagesrc = ""
             imagesrc = 'static/images/' + filename
+            print(imagesrc)
             cnum = cin.getcinemanum()  # 总影院数
             cinemaID = cnum[0] + 1
             c = cin.Cinema(cinemaID, cname, caddr, cphone, imagesrc, acapacity, bcapacity)
@@ -425,31 +426,35 @@ def uploadmovie():
 
     elif request.method == 'POST':
         movie = request.form.get('movie')
-        duration = request.form.get('duration')
-        trailer = request.form.get('trailer')
-        afare = request.form.get('afare')
-        bfare = request.form.get('bfare')
-        request.form.get('trailer')
-        showday =  request.form.get('showday')
-        showtime = request.form.get('showtime')
-        showtime = showday + ' ' + showtime + ':00'
-        intro = request.form.get('intro')
-        f = request.files['the_file']
-        if f and allowed_file(f.filename):
-            filename = secure_filename(''.join(lazy_pinyin(f.filename)))
-            f.save('static/images/' + filename)
-            # flash("load file successfully!")
-            screenshot = ""
-            screenshot = 'static/images/' + filename
-            print(screenshot)
+        if movie == '':
+            print("kong")
+            return render_template('uploadmovie.html', messages="empty")
+        else:
+            duration = request.form.get('duration')
+            trailer = request.form.get('trailer')
+            afare = request.form.get('afare')
+            bfare = request.form.get('bfare')
+            request.form.get('trailer')
+            showday =  request.form.get('showday')
+            showtime = request.form.get('showtime')
+            showtime = showday + ' ' + showtime + ':00'
+            intro = request.form.get('intro')
+            f = request.files['the_file']
+            if f and allowed_file(f.filename):
+                filename = secure_filename(''.join(lazy_pinyin(f.filename)))
+                f.save('static/images/' + filename)
+                # flash("load file successfully!")
+                screenshot = ""
+                screenshot = 'static/images/' + filename
+                print(screenshot)
 
-        cinemaID = request.form.get('cinemaID')
-        cinemaID = cinemaID[0]
+            cinemaID = request.form.get('cinemaID')
+            cinemaID = cinemaID[0]
 
-        #创建影片对象
-        m = mv.Movie(movie, cinemaID, showtime, duration, screenshot, intro, trailer, afare, bfare)
-        msg = m.insertmovie()
-        return render_template('uploadmovie.html', messages=msg)
+            #创建影片对象
+            m = mv.Movie(movie, cinemaID, showtime, duration, screenshot, intro, trailer, afare, bfare)
+            msg = m.insertmovie()
+            return render_template('uploadmovie.html', messages=msg)
 
 
 # 影院管理员——派送票员送票

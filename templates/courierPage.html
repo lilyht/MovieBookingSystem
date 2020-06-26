@@ -114,8 +114,8 @@
                                           <p class="box-comment-text"> 订单编号：{{item[0]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  地址：{{item[6]}}  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;  联系电话：{{item[5]}}</p>
                                       </div>
                                   </div>
-                                  <input class="button button-sm button-primary button-zakaria" type="submit" name="action" value="送达确认" >
-                                  <input class="button button-sm button-primary button-zakaria" type="submit" name="action" value="取消订单" >
+                                  <input class="button button-sm button-primary button-zakaria" type="submit" name="action" value="送达确认" onclick="ok()">
+                                  <input class="button button-sm button-primary button-zakaria" type="submit" name="action" value="取消订单" onclick="fail()">
                               </div>
     
                           </div>
@@ -151,5 +151,14 @@
     </div>
     <script src="static/js/core.min.js"></script>
     <script src="static/js/script.js"></script>
+    <script>
+      function ok() {
+        alert("影票配送成功！");
+      }
+      function fail() {
+        alert("影票配送失败，已取消本订单！");
+      }
+      </script>
+      
   </body>
 </html>

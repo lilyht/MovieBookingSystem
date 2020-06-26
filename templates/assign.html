@@ -57,27 +57,8 @@
                 <div class="rd-navbar-nav-wrap" style="padding-left: 600px;">
                   <ul class="rd-navbar-nav">
                     <li class="rd-nav-item active"><a class="rd-nav-link" href="index">Home</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="CameraList">影院列表</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
-                      <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="about-us.html">About Us</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="what-we-offer.html">What We Offer</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="our-team.html">Our Team</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="pricing-list.html">Pricing List</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="404-page.html">404 Page</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="coming-soon.html">Coming Soon</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="privacy-policy.html">Privacy Policy</a>
-                        </li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="search-results.html">Search Results</a>
-                        </li>
-                      </ul>
-                    </li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="CinemaList">影院列表</a></li>
+                    <li class="rd-nav-item"><a class="rd-nav-link" href="MovieList">影院列表</a></li>                    
                     <li class="rd-nav-item"><a class="rd-nav-link" href="login">管理员入口</a></li>
                   </ul>
                 </div>
@@ -90,9 +71,10 @@
       <section class="section section-xl bg-default text-md-left" style="padding-bottom: 15px;">
         <div class="container">
           <div class="title-classic">
-            <h4 class="title-classic-title">欢迎系统管理员xxx！</h4><br><br/>
+            <h4>为电影院指派电影院管理员</h4>
           </div>
-          为电影院指派电影院管理员。注意一个影院只能有一个电影院管理员，一个电影院管理员也只能负责一个影院的管理工作！
+          
+          注意一个影院只能有一个电影院管理员，一个电影院管理员也只能负责一个影院的管理工作！
           <!-- <h6>创建影院</h6> -->
         </div>
       </section>
@@ -163,7 +145,7 @@
     
     {% if messages == "done" %}
         <script>alert("指派电影院管理员成功！")</script>
-        <script type='text/javascript'>window.location.href='sysadminPage'</script>
+        <!-- <script type='text/javascript'>window.location.href='sysadminPage?sysadmin='</script> -->
     {% endif %}
         
       <!-- Page Footer-->

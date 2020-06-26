@@ -50,7 +50,7 @@ def popularcinema():
     # 统计最受欢迎电影院模块
     db, cursor = deal.connect2db()
     # 返回前三条结果
-    sql = ('SELECT O.cinemaID, COUNT(distinct(orderID)) as sales, C.cname, C.imagesrc '
+    sql = ('SELECT DISTINCT O.cinemaID, COUNT(distinct(orderID)) as sales, C.cname, C.imagesrc '
             'FROM MOrder O, Cinema C WHERE C.cinemaID = O.cinemaID Group BY O.cinemaID ORDER BY sales DESC limit 3;')
 
     cursor.execute(sql)
