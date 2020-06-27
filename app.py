@@ -52,10 +52,12 @@ def login():
         username = request.form.get('adminname')
         password = request.form.get('password')
         adminRole = request.form.get('adminRole')
-        print(adminRole)
+        # print(adminRole)
         print(username)
         # 连接数据库，默认数据库用户名root，密码空
-        if adminRole == 'SYSADMIN':  # 系统管理员
+        if adminRole == None:
+            return render_template('login.html', messages="roleempty")
+        elif adminRole == 'SYSADMIN':  # 系统管理员
             sysadmin = admin.SysAdmin(username, password)
             msg = admin.SysAdmin.SysAdminLogin(sysadmin)
             return render_template('login.html', messages=msg, username=username, userRole=adminRole)

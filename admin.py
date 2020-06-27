@@ -20,19 +20,24 @@ class SysAdmin(Admin):
     
     def SysAdminLogin(self):
         db, cursor = deal.connect2db()
-        sql = "SELECT * from SYSADMIN where adminname = '{}' and password = '{}'".format(self.adminname, self.password)
-        cursor.execute(sql)
-        db.commit()
-        res = cursor.fetchall()
-        num = len(res)
-        
-        # 如果存在该管理员且密码正确
-        if num == 1:
-            print("登录成功！欢迎系统管理员！")
-            msg = "done1"
+        if self.adminname == '':
+            msg = "nameempty"
+        elif self.password == '':
+            msg = "pswempty" 
         else:
-            print("您没有系统管理员权限或登录信息出错。")
-            msg = "fail1"
+            sql = "SELECT * from SYSADMIN where adminname = '{}' and password = '{}'".format(self.adminname, self.password)
+            cursor.execute(sql)
+            db.commit()
+            res = cursor.fetchall()
+            num = len(res)
+            
+            # 如果存在该管理员且密码正确
+            if num == 1:
+                print("登录成功！欢迎系统管理员！")
+                msg = "done1"
+            else:
+                print("您没有系统管理员权限或密码错误。")
+                msg = "fail1"
         return msg
 
 # 子类
@@ -43,19 +48,24 @@ class CinAdmin(Admin):
 
     def CinAdminLogin(self):
         db, cursor = deal.connect2db()
-        sql = "SELECT * from CINADMIN where adminname = '{}' and password='{}'".format(self.adminname, self.password)
-        cursor.execute(sql)
-        db.commit()
-        res = cursor.fetchall()
-        num = 0
-        num = len(res)
-        # 如果存在该电影院管理员且密码正确
-        if num == 1:
-            print("登录成功！欢迎电影院管理员！")
-            msg = "done2"
+        if self.adminname == '':
+            msg = "nameempty"
+        elif self.password == '':
+            msg = "pswempty" 
         else:
-            print("您没有电影院管理员权限或登录信息出错。")
-            msg = "fail2"
+            sql = "SELECT * from CINADMIN where adminname = '{}' and password='{}'".format(self.adminname, self.password)
+            cursor.execute(sql)
+            db.commit()
+            res = cursor.fetchall()
+            num = 0
+            num = len(res)
+            # 如果存在该电影院管理员且密码正确
+            if num == 1:
+                print("登录成功！欢迎电影院管理员！")
+                msg = "done2"
+            else:
+                print("您没有电影院管理员权限或登录信息出错。")
+                msg = "fail2"
         return msg
 
     def assigncinadmin(self, cinemaID):

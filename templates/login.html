@@ -104,8 +104,14 @@
           console.log(sysadminname)
           window.location.href='sysadminPage?sysadmin='+sysadminname;
         </script>
+    {% elif messages == "nameempty" %}
+        <script>alert("登录失败！用户名不能为空！")</script>
+    {% elif messages == "pswempty" %}
+        <script>alert("登录失败！密码不能为空！")</script>
+    {% elif messages == "roleempty" %}
+        <script>alert("登录失败！未选择登录身份！")</script>
     {% elif messages == "fail1" %}
-        <script>alert("登录失败！您没有系统管理员权限或登录信息出错。")</script>
+        <script>alert("登录失败！您没有系统管理员权限或登录信息错误。")</script>
     {% elif messages == "done2" %}
         <script>alert("登录成功！欢迎影院管理员！")</script>
         <script type='text/javascript'>
@@ -114,7 +120,7 @@
           window.location.href='cinadminPage?cinadmin='+cinadminname;
         </script>
     {% elif messages == "fail2" %}
-        <script>alert("登录失败！您没有影院管理员权限或登录信息出错。")</script>
+        <script>alert("登录失败！您没有影院管理员权限或登录信息错误。")</script>
     {% elif messages == "done3" %}
         <script>alert("登录成功！欢迎配送员！")</script>
         <script type='text/javascript'>
@@ -123,14 +129,14 @@
           window.location.href='courierPage?couriername='+couriername;
         </script>
     {% elif messages == "fail3" %}
-        <script>alert("登录失败！您没有配送员权限或登录信息出错。")</script>
+        <script>alert("登录失败！您没有配送员权限或登录信息错误。")</script>
     {% endif %}
         
       <!-- Page Footer-->
       <footer class="section footer-modern footer-modern-2">
         <div class="footer-modern-panel text-center">
           <div class="container">
-            <p class="rights"><span>Copyright &copy; 天津大学软件工程2020春季</span></p>
+            <p class="rights"><span>&copy; 天津大学软件工程2020春季</span></p>
             <p>项目地址：<a class="link" href="https://github.com/lilyht/MovieBookingSystem" style="color: write;">https://github.com/lilyht/MovieBookingSystem</a></p>
 
           </div>
