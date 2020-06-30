@@ -8,7 +8,8 @@ import MySQLdb
 import importlib
 
 class Morder():
-    def __init__(self, orderID, movie='', cinemaID='', seatrank='', seatnum='', phone='', addr='', isFinished=0, cost=0, tansactiontime='', courier=''):
+    def __init__(self, orderID, movie='', cinemaID='', seatrank='', seatnum='', phone='', addr='', 
+                    isFinished=0, cost=0, tansactiontime='', courier=''):
         self.orderID = orderID
         self.movie = movie
         self.cinemaID = cinemaID
@@ -26,7 +27,8 @@ class Morder():
         msg = ''
         db, cursor = deal.connect2db()
         sql = "INSERT into MOrder values ('{}', '{}', {}, '{}', '{}', '{}', '{}', {}, {}, '{}', '{}');".format(\
-            self.orderID, self.movie, int(self.cinemaID), self.seatrank, self.seatnum, self.phone, self.addr, 0, self.cost, self.tansactiontime, self.courier)
+            self.orderID, self.movie, int(self.cinemaID), self.seatrank, self.seatnum, self.phone, self.addr, 0,
+             self.cost, self.tansactiontime, self.courier)
         print(sql)
         cursor.execute(sql)
         db.commit()

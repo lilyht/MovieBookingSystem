@@ -216,10 +216,11 @@ def MovieDetail():
 
         ordernum = morder.count()  # 总订单数
         orderID = str(ordernum[0]+1)
+        maxseat =  100
         # print(ordernum[0])
         seatnum = ''
         for i in range (buynum):
-            r = random.randint(0,100)
+            r = random.randint(0,maxseat)
             seatnum = seatrank + str(r) + ' ' + seatnum
         if seatrank == 'A':
             cost = buynum * afare
