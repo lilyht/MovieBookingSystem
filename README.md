@@ -20,23 +20,23 @@ python app.py
 
 + 系统首页
 
-  ![home](C:\Users\HP\gitrepository\MovieBookingSys\img\home.png)
+  ![home](./img/home.png)
 
 + 管理员登录界面
 
-  ![login](C:\Users\HP\gitrepository\MovieBookingSys\img\login.png)
+  ![login](./img/login.png)
 
 + 影片列表
 
-  ![movielist1](C:\Users\HP\gitrepository\MovieBookingSys\img\movielist1.png)
+  ![movielist1](./img/movielist1.png)
 
   
 
-  ![movielist2](C:\Users\HP\gitrepository\MovieBookingSys\img\movielist2.png)
+  ![movielist2](./img/movielist2.png)
 
 + 指定送票员送票界面
 
-  ![delivery](C:\Users\HP\gitrepository\MovieBookingSys\img\delivery.jpg)
+  ![delivery](./img/delivery.jpg)
 
   
 
