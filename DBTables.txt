@@ -1,0 +1,65 @@
+创建MySQL数据库：
+CREATE database MBDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+use MBDB;
+
+数据库建表语句（共6个表）：
+1）SysAdmin
+CREATE table SysAdmin(
+adminname Varchar(50),
+password Varchar(50),
+primary key (adminname));
+
+2）CinAdmin
+CREATE table CinAdmin(
+adminname Varchar(50),
+password Varchar(50),
+cinemaID Integer,
+primary key (adminname));
+
+3）Cinema		
+CREATE table Cinema(
+cinemaID Integer,
+cname Varchar(50),
+caddr Varchar(50),
+cphone Varchar(30),
+imagesrc Varchar(60),
+acapacity Integer,
+bcapacity Integer,
+primary key (cinemaID));
+
+4）Movie
+CREATE table Movie(
+movie Varchar(50),
+cinemaID Integer,
+showtime DATETIME,
+duration Integer,
+screenshot Varchar(60),
+intro Varchar(800),
+trailer Varchar(60),
+afare FLOAT,
+bfare FLOAT,
+primary key (movie, cinemaID));
+
+5）MOrder
+CREATE table MOrder(
+orderID Varchar(50),
+movie Varchar(50),
+cinemaID Integer,
+seatrank Varchar(8),
+seatnum Varchar(20),
+phone Varchar(30),
+addr Varchar(50),
+isFinished Integer,
+cost Float,
+tansactiontime DATETIME,
+courier Varchar(50),
+primary key (orderID),
+FOREIGN KEY (movie) references MOVIE (movie),
+FOREIGN KEY (cinemaID) references Cinema (cinemaID));
+
+6）Courier
+CREATE table Courier(
+name Varchar(50),
+password Varchar(50),
+primary key (name));
